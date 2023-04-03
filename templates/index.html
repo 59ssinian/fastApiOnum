@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>특허사무소 온음 상표 검색</title>
+
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/popper.min.js"></script>
+    <script src="/static/js/bootstrap.js"></script>
+
+      <!-- CSS dependencies -->
+  <link rel="stylesheet" href="/static/css/wireframe.css">
+
+</head>
+<div class="text-center py-5">
+    <div class="container">
+      <div class="row my-5 justify-content-center">
+        <div class="col-md-9">
+          <h1>온음 AI 검토 시스템</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="py-4 bg-light" style="">
+    <div class="container">
+      <div class="row">
+        <a href="/search">
+          <div class="col-md-4 p-3">
+            <div class="card box-shadow" style="">
+              <div class="card-body">
+                <h4>일반 개별 상표 검토 보고</h4>
+              </div>
+            </div>
+          </div>
+        </a>
+        <a href="/mass_search">
+          <div class="col-md-4 p-3">
+            <div class="card box-shadow">
+              <div class="card-body">
+                <h4>대량 상표 검토 보고</h4>
+              </div>
+            </div>
+          </div>
+        </a>
+        <div class="col-md-4 p-3">
+          <div class="card box-shadow">
+            <div class="card-body">
+              <h4 contenteditable="true">SAMPLE</h4>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer class="text-muted py-5"></footer>
+</html>
+
+<script>
+$(document).ready(function(){
+    $(".mark_toggle").hide();
+    $(".class_toggle").hide();
+});
+</script>
+

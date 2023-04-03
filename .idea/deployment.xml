@@ -1,25 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" autoUpload="Always" serverName="ubuntu@13.125.88.32:22 key (2)" remoteFilesAllowedToDisappearOnAutoupload="false">
+  <component name="PublishConfigData" autoUpload="Always" serverName="ubuntu@13.125.88.32:22 key" remoteFilesAllowedToDisappearOnAutoupload="false">
     <serverData>
-      <paths name="onumali-aws">
-        <serverdata>
-          <mappings>
-            <mapping local="$PROJECT_DIR$" web="/" />
-          </mappings>
-        </serverdata>
-      </paths>
       <paths name="ubuntu@13.125.88.32:22 key">
         <serverdata>
           <mappings>
-            <mapping deploy="/tmp/pycharm_project_83" local="$PROJECT_DIR$" />
-          </mappings>
-        </serverdata>
-      </paths>
-      <paths name="ubuntu@13.125.88.32:22 key (2)">
-        <serverdata>
-          <mappings>
-            <mapping deploy="/tmp/pycharm_project_675" local="$PROJECT_DIR$" />
+            <mapping deploy="/tmp/pycharm_project_768" local="$PROJECT_DIR$" />
           </mappings>
         </serverdata>
       </paths>
