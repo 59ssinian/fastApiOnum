@@ -389,22 +389,41 @@ def merge_trademarks(trademarks_detail, trademarks_image):
 
 def naver_search(text):
 
-    naver_driver = webdriver.Chrome()
+    chrome_options = Options()
+    chrome_options.add_argument('--ignore-certificate-errors')
+    chrome_options.add_argument('--headless')
+
+    # 로그인 파트 시작
+    print("login_start")
+
+    naver_driver = webdriver.Chrome(options=chrome_options)
     naver_driver.get("https://search.naver.com/search.naver?query="+text)
 
     url = "snapshot/"+text+"_naver.png"
 
     naver_driver.get_screenshot_as_file(url)
 
+    naver_driver.quit()
+
     return url
 
 
 def google_search(text):
-    google_driver = webdriver.Chrome()
+
+    chrome_options = Options()
+    chrome_options.add_argument('--ignore-certificate-errors')
+    chrome_options.add_argument('--headless')
+
+    # 로그인 파트 시작
+    print("login_start")
+
+    google_driver = webdriver.Chrome(options=chrome_options)
     google_driver.get("https://www.google.com/search?q=" + text)
 
     url = "snapshot/" + text + "_google.png"
 
     google_driver.get_screenshot_as_file(url)
+
+    google_driver.quit()
 
     return url
