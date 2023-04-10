@@ -5,8 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="515296ce-6c7f-4ab9-b670-0ff297a39be5" name="Changes" comment="기존세팅적용">
+      <change afterPath="$PROJECT_DIR$/snapshot/blank" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/deployment.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/deployment.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/fastApiOnum.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/fastApiOnum.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/functions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/read.me" beforeDir="false" afterPath="$PROJECT_DIR$/read.me" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/search_report.py" beforeDir="false" afterPath="$PROJECT_DIR$/search_report.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -46,7 +50,7 @@
     &quot;WebServerToolWindowPanel.toolwindow.show.date&quot;: &quot;false&quot;,
     &quot;WebServerToolWindowPanel.toolwindow.show.permissions&quot;: &quot;false&quot;,
     &quot;WebServerToolWindowPanel.toolwindow.show.size&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/python/fastApiOnum&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/python/aws-keypair/onumapli.pem&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -62,6 +66,24 @@
     </key>
   </component>
   <component name="RunManager">
+    <configuration default="true" type="Python.FastAPI">
+      <module name="fastApiOnum" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="/home/ubuntu/.virtualenvs/fastApiOnum/bin/python" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <EXTENSION ID="software.aws.toolkits.jetbrains.core.execution.PythonAwsConnectionExtension">
+        <option name="credential" />
+        <option name="region" />
+        <option name="useCurrentConnection" value="false" />
+      </EXTENSION>
+      <option name="launchJavascriptDebuger" value="false" />
+      <method v="2" />
+    </configuration>
     <configuration name="fastApiOnum" type="Python.FastAPI">
       <option name="additionalOptions" value="--reload --host 0.0.0.0 --port 8000" />
       <option name="file" value="$PROJECT_DIR$/main.py" />
@@ -69,7 +91,7 @@
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <option name="SDK_HOME" value="/home/ubuntu/.virtualenvs/fastApiOnum/bin/python" />
-      <option name="SDK_NAME" value="Remote Python 3.10.6 (sftp://ubuntu@13.125.88.32:22/home/ubuntu/.virtualenvs/fastApiOnum/bin/python)" />
+      <option name="SDK_NAME" value="Remote Python 3.10.6 (sftp://ubuntu@3.39.195.177:22/home/ubuntu/.virtualenvs/fastApiOnum/bin/python)" />
       <option name="WORKING_DIRECTORY" value="" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
@@ -103,7 +125,12 @@
       <workItem from="1680164245698" duration="3836000" />
       <workItem from="1680316146298" duration="1209000" />
       <workItem from="1680506716054" duration="2824000" />
-      <workItem from="1680584891553" duration="1287000" />
+      <workItem from="1680584891553" duration="3629000" />
+      <workItem from="1680657346767" duration="1645000" />
+      <workItem from="1680677358263" duration="3746000" />
+      <workItem from="1680687102968" duration="205000" />
+      <workItem from="1680739548327" duration="5845000" />
+      <workItem from="1681108704320" duration="330000" />
     </task>
     <task id="LOCAL-00001" summary="기존세팅적용">
       <created>1680506751711</created>
@@ -112,7 +139,14 @@
       <option name="project" value="LOCAL" />
       <updated>1680506751711</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="기존세팅적용">
+      <created>1680589059640</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1680589059640</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -135,6 +169,6 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/fastApiOnum$main.coverage" NAME="main Coverage Results" MODIFIED="1680148502568" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/fastApiOnum$fastApiOnum.coverage" NAME="fastApiOnum Coverage Results" MODIFIED="1680508273228" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/fastApiOnum$fastApiOnum.coverage" NAME="fastApiOnum Coverage Results" MODIFIED="1681108784472" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
   </component>
 </project>

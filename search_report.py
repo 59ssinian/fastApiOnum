@@ -105,12 +105,12 @@ def search_report(marks, groups):
 
         id_page = notion_custom.notion_block_append_semi_title(id_page, section_mark)
 
-        google_url = functions.google_search(section_mark)
-        print(google_url)
-        notion_custom.notion_block_append_image(id_page, google_url)
+        #google_url = functions.google_search(section_mark)
+        #print(google_url)
+        #notion_custom.notion_block_append_image(id_page, google_url)
 
-        naver_url = functions.naver_search(section_mark)
-        notion_custom.notion_block_append_image(id_page, naver_url)
+        #naver_url = functions.naver_search(section_mark)
+        #notion_custom.notion_block_append_image(id_page, naver_url)
 
 
         third_id_page = "b6a0d6cdbb70479c93fbebc5b9d349b5"

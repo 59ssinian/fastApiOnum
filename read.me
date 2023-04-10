@@ -1,2 +1,33 @@
-#크롬 설치
-sudo apt install chromium-chromedriver
+#크롬설치 : worked!
+wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
+sudo apt update
+sudo apt install google-chrome-stable
+
+
+#postgresql 설치
+sudo apt update
+sudo apt install postgresql
+
+@postgresql 설치확인
+systemctl status postgresql
+
+@구동
+sudo su - postgres
+createdb "mydatabase"
+psql "mydatabase"
+
+
+#postgresql pqadmin4 외부 접속
+
+pg_hba.conf의 끝에,
+
+host (DB명 - onumapludb) (호스트IP - 3.39.195.177)/32 trust(모두 믿음)
+
+추가,
+
+postgrersql.conf에
+
+listen IP address = '*'
+
+로 수정
