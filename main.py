@@ -28,7 +28,9 @@ async def index(request: Request):
 async def index(request: Request):
     return templates.TemplateResponse("search_report.html", {"request": request})
 
-
+@app.get("/groupcode", response_class=HTMLResponse)
+async def index(request: Request):
+    return templates.TemplateResponse("groupcode.html", {"request": request})
 
 @app.post("/submit")
 async def search_form(markk: List[str] = Form([]), marke: List[str] = Form([]),
@@ -43,7 +45,7 @@ async def search_form(markk: List[str] = Form([]), marke: List[str] = Form([]),
 
     groups = []
     for i in range(len(classno)):
-        if classno[i] is not 0:
+        if classno[i] != 0:
             groups.append({"class_no": classno[i], "group_code": group[i], "name": name[i]})
 
     search_report.search_report(marks, groups)
