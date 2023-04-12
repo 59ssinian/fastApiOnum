@@ -2,11 +2,14 @@ from fastapi import FastAPI, Request, Form
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
 
 from typing import List
 
 import mass_report
 import search_report
+import groupcode
 
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
@@ -15,6 +18,21 @@ templates = Jinja2Templates(directory="templates")
 app.mount("/static/css", StaticFiles(directory="static/css"), name="static_css")
 app.mount("/static/js", StaticFiles(directory="static/js"), name="static_js")
 app.mount("/snapshot", StaticFiles(directory="snapshot"), name="snapshot")
+
+# for front-end
+origins = [
+    "http://localhost",
+    "http://localhost:8080",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 @app.get("/", response_class=HTMLResponse)
 async def index(request: Request):
@@ -75,9 +93,21 @@ async def mass_search_form(markks: List[str], markes: List[str],
 
 
 
+
+
+class Input(BaseModel):
+    input_value: str
+
+@app.get("/my-endpoint")
+def my_endpoint(input: Input):
+    result = groupcode.get_groupcode(input.input_value)
+    return result
+
 @app.get("/hello/{name}")
 async def say_hello(name: str):
     return {"message": f"Hello 헬로 {name}"}
+
+
 
 
 

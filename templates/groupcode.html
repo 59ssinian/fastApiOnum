@@ -1,286 +1,46 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <title>특허사무소 온음 상표 검색</title>
 
-    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
-    <script src="/static/js/jquery.min.js"></script>
+    <link rel="stylesheet" href="/static/css/custom_style.css">
     <script src="/static/js/popper.min.js"></script>
     <script src="/static/js/bootstrap.js"></script>
+    <!-- Load Axios -->
+    <script type="module" src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <!-- Load Vue.js -->
+    <script src="https://unpkg.com/vue@next"></script>
 
-    <!-- CSS dependencies -->
-    <link rel="stylesheet" href="/static/css/wireframe.css">
-
-    <!-- 개발버전, 도움되는 콘솔 경고를 포함. -->
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 
 </head>
 <body class="bg-light">
   <div class="">
     <div class="container">
+      <!-- 타이틀 -->
       <div class="row">
         <div class="text-center col-md-7 mx-auto">
           <br>
-          <h3><b>상표 검색 Notion 생성 페이지</b></h3>
+          <h3><b>상표 유사군 코드 검색</b></h3>
         </div>
       </div>
+
+      <!-- 검색바 -->
       <div class="row">
         <div class="col-md-12 order-md-1">
-          <h6 class="mb-3"><b>상표 정보</b></h6>
-          <form action="submit" method="post">
+          <h6 class="mb-3"><b>상품 정보</b></h6>
+          <input type="text" class="form-control"
+                 placeholder="상품명 검색식 입력. (), or, and 사용가능">
+            <button @click="queryData">검색</button>
+        </div>
+      </div>
 
-            <!-- 상표 입력 시작 -->
-            <div class="row">
-              <div class="col-md-1 mb-1 col-lg-1 text-right"> <label>no.</label>
-              </div>
-              <div class="col-md-4 mb-3 col-lg-4"> <label>한글파트</label>
-              </div>
-              <div class="col-md-4 mb-3 col-lg-4"> <label>영문파트</label>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-1 mb-1 col-lg-1  text-right"> <label>1</label>
-              </div>
-              <div class="col-md-4 mb-3 col-lg-4">
-                <input type="text" class="form-control" id="mark1k" name="markk" placeholder="영문만인 경우 여기 기재"required>
-              </div>
-              <div class="col-md-4 mb-3 col-lg-4">
-                <input type="text" class="form-control" id="mark1e" name="marke">
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-1 mb-1 col-lg-1  text-right"> <label>2</label>
-              </div>
-              <div class="col-md-4 mb-3 col-lg-4">
-                <input type="text" class="form-control" id="mark2k" name="markk">
-              </div>
-              <div class="col-md-4 mb-3 col-lg-4">
-                <input type="text" class="form-control" id="mark2e" name="marke">
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-1 mb-1 col-lg-1  text-right"> <label>3</label>
-              </div>
-              <div class="col-md-4 mb-3 col-lg-4">
-                <input type="text" class="form-control" id="mark3k" name="markk">
-              </div>
-              <div class="col-md-4 mb-3 col-lg-4">
-                <input type="text" class="form-control" id="mark3e" name="marke">
-              </div>
-            </div>
-            <div class="row mark_toggle">
-              <div class="col-md-1 mb-1 col-lg-1  text-right"> <label>4</label>
-              </div>
-              <div class="col-md-4 mb-3 col-lg-4">
-                <input type="text" class="form-control" id="mark4k" name="markk">
-              </div>
-              <div class="col-md-4 mb-3 col-lg-4">
-                <input type="text" class="form-control" id="mark4e" name="marke">
-              </div>
-            </div>
-            <div class="row mark_toggle">
-              <div class="col-md-1 mb-1 col-lg-1  text-right"> <label>5</label>
-              </div>
-              <div class="col-md-4 mb-3 col-lg-4">
-                <input type="text" class="form-control" id="mark5k" name="markk">
-              </div>
-              <div class="col-md-4 mb-3 col-lg-4">
-                <input type="text" class="form-control" id="mark5e" name="marke">
-              </div>
-            </div>
-            <div class="row mark_toggle">
-              <div class="col-md-1 mb-1 col-lg-1  text-right"> <label>6</label>
-              </div>
-              <div class="col-md-4 mb-3 col-lg-4">
-                <input type="text" class="form-control" id="mark6k" name="markk">
-              </div>
-              <div class="col-md-4 mb-3 col-lg-4">
-                <input type="text" class="form-control" id="mark6e" name="marke">
-              </div>
-            </div>
-            <div class="row mark_toggle">
-              <div class="col-md-1 mb-1 col-lg-1  text-right"> <label>7</label>
-              </div>
-              <div class="col-md-4 mb-3 col-lg-4">
-                <input type="text" class="form-control" id="mark7k" name="markk">
-              </div>
-              <div class="col-md-4 mb-3 col-lg-4">
-                <input type="text" class="form-control" id="mark7e" name="marke">
-              </div>
-            </div>
-            <div class="row mark_toggle">
-              <div class="col-md-1 mb-1 col-lg-1  text-right"> <label>8</label>
-              </div>
-              <div class="col-md-4 mb-3 col-lg-4">
-                <input type="text" class="form-control" id="mark8k" name="markk">
-              </div>
-              <div class="col-md-4 mb-3 col-lg-4">
-                <input type="text" class="form-control" id="mark8e" name="marke">
-              </div>
-            </div>
-            <div class="row mark_toggle">
-              <div class="col-md-1 mb-1 col-lg-1  text-right"> <label>9</label>
-              </div>
-              <div class="col-md-4 mb-3 col-lg-4">
-                <input type="text" class="form-control" id="mark9k" name="markk">
-              </div>
-              <div class="col-md-4 mb-3 col-lg-4">
-                <input type="text" class="form-control" id="mark9e" name="marke">
-              </div>
-            </div>
-            <div class="row mark_toggle">
-              <div class="col-md-1 mb-1 col-lg-1  text-right"> <label>10</label>
-              </div>
-              <div class="col-md-4 mb-3 col-lg-4">
-                <input type="text" class="form-control" id="mark10k" name="markk">
-              </div>
-              <div class="col-md-4 mb-3 col-lg-4">
-                <input type="text" class="form-control" id="mark10e" name="marke">
-              </div>
-            </div>
-            <!-- 상표 입력 끝 -->
-            <button type="button" onclick="$('.mark_toggle').toggle()">더보기</button>
-
-
-
-          <hr class="mb-4">
-
-            <!-- 류 입력 시작 -->
-            <h6 class="mb-3"><b>류 및 지정상품 정보</b></h6>
-            <div class="row">
-              <div class="col-md-1 mb-1 col-lg-1  text-right"> <label>no.</label></div>
-              <div class="mb-2 col-md-2 col-lg-2"> <label>류 정보</label><br>
-              </div>
-              <div class="mb-3 col-md-9" style=""> <label>유사군 코드 정보</label><br>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-1 mb-1 col-lg-1  text-right"> <label>1</label></div>
-              <div class="mb-2 col-md-2 col-lg-2">
-                <input type="number" class="form-control" id="classno[0]" name="classno" required value=0>
-              </div>
-              <div class="mb-5 col-md-5 col-lg-5" style="">
-                <input type="text" class="form-control" id="group[0]" name="group" placeholder="한 그룹으로 기재 / 예) G0301 G0502 S120602" required>
-              </div>
-              <div class="mb-5 col-md-5 col-lg-5" style="">
-                <input type="text" class="form-control" id="name[0]" name="name" placeholder="지정상품명 / 예) 가방 " required>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-1 mb-1 col-lg-1  text-right"> <label>2</label></div>
-              <div class="mb-2 col-md-2 col-lg-2">
-                <input type="number" class="form-control" id="classno[1]" name="classno" value=0>
-              </div>
-              <div class="mb-5 col-md-5 col-lg-5" style="">
-                <input type="text" class="form-control" id="group[1]" name="group" >
-              </div>
-              <div class="mb-5 col-md-5 col-lg-5" style="">
-                <input type="text" class="form-control" id="name[1]" name="name" >
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-1 mb-1 col-lg-1  text-right"> <label>3</label></div>
-              <div class="mb-2 col-md-2 col-lg-2">
-                <input type="number" class="form-control" id="classno[2]" name="classno" value=0>
-              </div>
-              <div class="mb-5 col-md-5 col-lg-5" style="">
-                <input type="text" class="form-control" id="group[2]" name="group" >
-              </div>
-              <div class="mb-5 col-md-5 col-lg-5" style="">
-                <input type="text" class="form-control" id="name[2]" name="name" >
-              </div>
-            </div>
-            <div class="row class_toggle">
-              <div class="col-md-1 mb-1 col-lg-1  text-right"> <label>4</label></div>
-              <div class="mb-2 col-md-2 col-lg-2">
-                <input type="number" class="form-control" id="classno[3]" name="classno" value=0>
-              </div>
-              <div class="mb-5 col-md-5 col-lg-5" style="">
-                <input type="text" class="form-control" id="group[3]" name="group" >
-              </div>
-              <div class="mb-5 col-md-5 col-lg-5" style="">
-                <input type="text" class="form-control" id="name[3]" name="name" >
-              </div>
-            </div>
-            <div class="row class_toggle">
-              <div class="col-md-1 mb-1 col-lg-1  text-right"> <label>5</label></div>
-              <div class="mb-2 col-md-2 col-lg-2">
-                <input type="number" class="form-control" id="classno[4]" name="classno" value=0>
-              </div>
-              <div class="mb-5 col-md-5 col-lg-5" style="">
-                <input type="text" class="form-control" id="group[4]" name="group" >
-              </div>
-              <div class="mb-5 col-md-5 col-lg-5" style="">
-                <input type="text" class="form-control" id="name[4]" name="name" >
-              </div>
-            </div>
-            <div class="row class_toggle">
-              <div class="col-md-1 mb-1 col-lg-1  text-right"> <label>6</label></div>
-              <div class="mb-2 col-md-2 col-lg-2">
-                <input type="number" class="form-control" id="classno[5]" name="classno" value=0>
-              </div>
-              <div class="mb-5 col-md-5 col-lg-5" style="">
-                <input type="text" class="form-control" id="group[5]" name="group" >
-              </div>
-              <div class="mb-5 col-md-5 col-lg-5" style="">
-                <input type="text" class="form-control" id="name[5]" name="name" >
-              </div>
-            </div>
-            <div class="row class_toggle">
-              <div class="col-md-1 mb-1 col-lg-1  text-right"> <label>7</label></div>
-              <div class="mb-2 col-md-2 col-lg-2">
-                <input type="number" class="form-control" id="classno[6]" name="classno" value=0>
-              </div>
-              <div class="mb-5 col-md-5 col-lg-5" style="">
-                <input type="text" class="form-control" id="group[6]" name="group" >
-              </div>
-              <div class="mb-5 col-md-5 col-lg-5" style="">
-                <input type="text" class="form-control" id="name[6]" name="name" >
-              </div>
-            </div>
-            <div class="row class_toggle">
-              <div class="col-md-1 mb-1 col-lg-1  text-right"> <label>8</label></div>
-              <div class="mb-2 col-md-2 col-lg-2">
-                <input type="number" class="form-control" id="classno[7]" name="classno" value=0>
-              </div>
-              <div class="mb-5 col-md-5 col-lg-5" style="">
-                <input type="text" class="form-control" id="group[7]" name="group" >
-              </div>
-              <div class="mb-5 col-md-5 col-lg-5" style="">
-                <input type="text" class="form-control" id="name[7]" name="name" >
-              </div>
-            </div>
-            <div class="row class_toggle">
-              <div class="col-md-1 mb-1 col-lg-1  text-right"> <label>9</label></div>
-              <div class="mb-2 col-md-2 col-lg-2">
-                <input type="number" class="form-control" id="classno[8]" name="classno" value=0>
-              </div>
-              <div class="mb-5 col-md-5 col-lg-5" style="">
-                <input type="text" class="form-control" id="group[8]" name="group" >
-              </div>
-              <div class="mb-5 col-md-5 col-lg-5" style="">
-                <input type="text" class="form-control" id="name[8]" name="name" >
-              </div>
-            </div>
-            <div class="row class_toggle">
-              <div class="col-md-1 mb-1 col-lg-1  text-right"> <label>10</label></div>
-              <div class="mb-2 col-md-2 col-lg-2">
-                <input type="number" class="form-control" id="classno[9]" name="classno" value=0>
-              </div>
-              <div class="mb-5 col-md-5 col-lg-5" style="">
-                <input type="text" class="form-control" id="group[9]" name="group" >
-              </div>
-              <div class="mb-5 col-md-5 col-lg-5" style="">
-                <input type="text" class="form-control" id="name[9]" name="name" >
-              </div>
-            </div>
-            <!-- 류 입력 끝 -->
-            <button type="button" onclick="$('.class_toggle').toggle()">더보기</button>
-
-            <hr class="mb-4">
-            <button class="btn btn-primary btn-lg btn-block" type="submit">일반 검토 보고서 작성</button>
-          </form>
+      <!-- 조회화면 -->
+      <div class="row">
+        <div id="screen">
+            <ul>
+                <li v-for="(item, index) in result" :key="index">{{ item }}</li>
+            </ul>
         </div>
       </div>
     </div>
@@ -289,9 +49,29 @@
 </html>
 
 <script>
-$(document).ready(function(){
-    $(".mark_toggle").hide();
-    $(".class_toggle").hide();
-});
+import axios from 'axios';
+import { ref } from 'vue';
+
+export default {
+  setup() {
+    const inputValue = ref('');
+    const result = ref([]);
+
+    const queryData = async () => {
+      const response = await axios.get('http://localhost:8000/my-endpoint', {
+        params: {
+          input: inputValue.value,
+        },
+      });
+      result.value = response.data;
+    };
+
+    return {
+      inputValue,
+      result,
+      queryData,
+    };
+  },
+};
 </script>
 
