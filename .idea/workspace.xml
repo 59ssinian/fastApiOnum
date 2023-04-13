@@ -4,11 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="515296ce-6c7f-4ab9-b670-0ff297a39be5" name="Changes" comment="기존세팅적용">
+    <list default="true" id="515296ce-6c7f-4ab9-b670-0ff297a39be5" name="Changes" comment="front edn stage 0.3">
+      <change afterPath="$PROJECT_DIR$/static/js/vue.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/groupcode.py" beforeDir="false" afterPath="$PROJECT_DIR$/groupcode.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/read.me" beforeDir="false" afterPath="$PROJECT_DIR$/read.me" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/groupcode.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/groupcode.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/groupcodes2.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/groupcodes2.html" afterDir="false" />
     </list>
@@ -135,7 +136,8 @@
       <workItem from="1681272934807" duration="8099000" />
       <workItem from="1681292833689" duration="1889000" />
       <workItem from="1681303793151" duration="595000" />
-      <workItem from="1681342838934" duration="16140000" />
+      <workItem from="1681342838934" duration="16248000" />
+      <workItem from="1681362742296" duration="14061000" />
     </task>
     <task id="LOCAL-00001" summary="기존세팅적용">
       <created>1680506751711</created>
@@ -172,7 +174,14 @@
       <option name="project" value="LOCAL" />
       <updated>1681294125987</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="front edn stage 0.3">
+      <created>1681359637681</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1681359637681</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -191,10 +200,11 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="기존세팅적용" />
-    <option name="LAST_COMMIT_MESSAGE" value="기존세팅적용" />
+    <MESSAGE value="front edn stage 0.3" />
+    <option name="LAST_COMMIT_MESSAGE" value="front edn stage 0.3" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/fastApiOnum$main.coverage" NAME="main Coverage Results" MODIFIED="1680148502568" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/fastApiOnum$fastApiOnum.coverage" NAME="fastApiOnum Coverage Results" MODIFIED="1681347342998" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/fastApiOnum$fastApiOnum.coverage" NAME="fastApiOnum Coverage Results" MODIFIED="1681374106396" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
   </component>
 </project>

@@ -5,11 +5,15 @@
     <title>특허사무소 온음 상표 검색</title>
 
     <link rel="stylesheet" href="/static/css/custom_style.css">
+    <!--
     <script src="/static/js/popper.min.js"></script>
+    -->
     <script src="/static/js/bootstrap.js"></script>
-    <!-- Load Axios -->
+
+    <!-- Load Axios-->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <!-- Load Vue.js -->
+
+    <!-- Load Vue.js-->
     <script src="https://unpkg.com/vue@next"></script>
 
 
@@ -30,13 +34,14 @@
       <div class="row">
         <div class="col-md-12 order-md-1">
           <h6 class="mb-3"><b>상품 정보</b></h6>
+          <span>TEXT : {{ count }}</span><button @click="click">PRESS</button>
           <input v-model="searchQuery" class="form-control"
                  placeholder="상품명 검색식 입력" @keyup.enter="search">
           <div>
               : 각 상품명은 ','로 구분하고, 두개를 동시에 포함하는 경우 ()로 묶어 표시
               ex) (미술 and 설치), 조각, 회화 / and 대신 & 이용 가능
           </div>
-        </div>
+
       </div>
 
       <!-- 조회화면 -->
@@ -48,6 +53,7 @@
         </div>
       </div>
     </div>
+    </div>
   </div>
 </body>
 </html>
@@ -57,7 +63,8 @@
         data() {
             return {
                 searchQuery: '',
-                results: []
+                results: [],
+                count:0
             };
         },
         methods: {
@@ -73,6 +80,12 @@
                     } catch (error) {
                         console.error('Error fetching data:', error);
                     }
+
+            },
+            click() {
+                    console.log(this.count);
+                    this.count=this.count+1;
+                    console.log(this.count);
             }
         },
     });

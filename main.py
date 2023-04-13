@@ -59,7 +59,7 @@ async def search_form(markk: List[str] = Form([]), marke: List[str] = Form([]),
     #변수 그룹 정리
     marks = []
     for i in range(len(markk)):
-        if markk[i] is not None:
+        if markk[i] != "":
             marks.append({"mark_kor": markk[i], "mark_eng": marke[i]})
 
     groups = []
@@ -99,16 +99,12 @@ async def mass_search_form(markks: List[str], markes: List[str],
 class Input(BaseModel):
     input_value: str
 
-@app.get("/my-fetch_results")
-def fetch_results():
-    result = groupcode.get_groupcode(input.input_value)
-    return result
-
 
 @app.get("/search/{query}")
 async def search(query: str):
-    result = groupcode.get_groupcode(query)
-    return result
+    groupcodes = groupcode.get_groupcode(query)
+    items_group = groupcode.get_items_by_groupcode(groupcodes)
+    return items_group
 
 @app.get("/hello/{name}")
 async def say_hello(name: str):
