@@ -23,6 +23,7 @@ app.mount("/snapshot", StaticFiles(directory="snapshot"), name="snapshot")
 origins = [
     "http://localhost",
     "http://localhost:8080",
+    "http://3.39.195.177:8000"
 ]
 
 app.add_middleware(
@@ -98,9 +99,15 @@ async def mass_search_form(markks: List[str], markes: List[str],
 class Input(BaseModel):
     input_value: str
 
-@app.get("/my-endpoint")
-def my_endpoint(input: Input):
+@app.get("/my-fetch_results")
+def fetch_results():
     result = groupcode.get_groupcode(input.input_value)
+    return result
+
+
+@app.get("/search/{query}")
+async def search(query: str):
+    result = groupcode.get_groupcode(query)
     return result
 
 @app.get("/hello/{name}")

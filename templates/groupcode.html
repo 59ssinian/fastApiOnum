@@ -8,7 +8,7 @@
     <script src="/static/js/popper.min.js"></script>
     <script src="/static/js/bootstrap.js"></script>
     <!-- Load Axios -->
-    <script type="module" src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <!-- Load Vue.js -->
     <script src="https://unpkg.com/vue@next"></script>
 
@@ -24,14 +24,18 @@
           <h3><b>상표 유사군 코드 검색</b></h3>
         </div>
       </div>
-
+    </div>
+    <div class="container" id="app">
       <!-- 검색바 -->
       <div class="row">
         <div class="col-md-12 order-md-1">
           <h6 class="mb-3"><b>상품 정보</b></h6>
-          <input type="text" class="form-control"
-                 placeholder="상품명 검색식 입력. (), or, and 사용가능">
-            <button @click="queryData">검색</button>
+          <input v-model="searchQuery" class="form-control"
+                 placeholder="상품명 검색식 입력" @keyup.enter="search">
+          <div>
+              : 각 상품명은 ','로 구분하고, 두개를 동시에 포함하는 경우 ()로 묶어 표시
+              ex) (미술 and 설치), 조각, 회화 / and 대신 & 이용 가능
+          </div>
         </div>
       </div>
 
@@ -39,7 +43,7 @@
       <div class="row">
         <div id="screen">
             <ul>
-                <li v-for="(item, index) in result" :key="index">{{ item }}</li>
+                <li v-for="(value, key) in results" :key="key">{{ key }}: {{ value }}</li>
             </ul>
         </div>
       </div>
@@ -49,29 +53,30 @@
 </html>
 
 <script>
-import axios from 'axios';
-import { ref } from 'vue';
-
-export default {
-  setup() {
-    const inputValue = ref('');
-    const result = ref([]);
-
-    const queryData = async () => {
-      const response = await axios.get('http://localhost:8000/my-endpoint', {
-        params: {
-          input: inputValue.value,
+    const app = Vue.createApp({
+        data() {
+            return {
+                searchQuery: '',
+                results: []
+            };
         },
-      });
-      result.value = response.data;
-    };
+        methods: {
+            async search() {
+                    if (!this.searchQuery) {
+                        this.results = [];
+                        return;
+                    }
+                    try {
+                        const response = await axios.get(`http://3.39.195.177:8000/search/${encodeURIComponent(this.searchQuery)}`);
+                        this.results = response.data;
+                        console.log(this.results);
+                    } catch (error) {
+                        console.error('Error fetching data:', error);
+                    }
+            }
+        },
+    });
 
-    return {
-      inputValue,
-      result,
-      queryData,
-    };
-  },
-};
+    app.mount('#app');
 </script>
 
