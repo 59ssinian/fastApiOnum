@@ -17,6 +17,7 @@ templates = Jinja2Templates(directory="templates")
 # Mount the StaticFiles instance to the desired path
 app.mount("/static/css", StaticFiles(directory="static/css"), name="static_css")
 app.mount("/static/js", StaticFiles(directory="static/js"), name="static_js")
+app.mount("/static/bulma", StaticFiles(directory="static/bulma"), name="static_bulma")
 app.mount("/snapshot", StaticFiles(directory="snapshot"), name="snapshot")
 
 # for front-end
