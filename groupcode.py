@@ -42,9 +42,15 @@ def get_items_by_groupcode(groupcodes):
     conn = get_connection()
     cur = conn.cursor()
 
-    items_group=[]
+    items_groups=[]
+
 
     for groupcode in groupcodes:
+
+        #먼저 groupcode 입력
+        items_group = {}
+        items_group['groupcode']=groupcode
+        items_group['classgroup'] = []
 
         modified_query = "groupcode = '"+groupcode+"' "
         order_query = " ORDER BY niceclass ASC"
@@ -55,16 +61,19 @@ def get_items_by_groupcode(groupcodes):
 
         cur.execute(query)
         rows = cur.fetchall()
+        print(rows)
         niceclasses = [row[0] for row in rows]
 
-        for index, niceclass in niceclasses:
+        print(niceclasses)
 
+        for niceclass in enumerate(niceclasses):
+            print("niceclass:"+str(niceclass[1]))
             # 대표명칭 찾기
             modified_query = "groupcode = '" + groupcode \
-                             + "' and niceclass = "+ str(niceclass) \
+                             + "' and niceclass = "+ str(niceclass[1]) \
                              + " and represent = true "
 
-            order_query = " ORDER BY niceclass ASC"
+            order_query = ""
 
             query = "SELECT DISTINCT name_kor FROM groupcodes_main WHERE " \
                     + modified_query + order_query
@@ -74,46 +83,36 @@ def get_items_by_groupcode(groupcodes):
             represents = [row[0] for row in rows]
 
             # 대표명칭 합하기
-            represent_names=""
-
-            for represent in represents:
-                represent_names=represent_names+represent
-
-                if index + 1 < len(niceclasses):
-                    represent_names = represent_names + ", "
+            #represent_names=sum_items(represents)
 
 
             #전체 명칭 찾기
             modified_query = "groupcode = '" + groupcode \
-                             + "' and niceclass = " + niceclass
+                             + "' and niceclass = " + str(niceclass[1])
 
-            order_query = ""
+            order_query = "ORDER BY sourcescount DESC"
 
-            query = "SELECT DISTINCT name_kor FROM groupcodes_main WHERE " \
+            query = "SELECT DISTINCT name_kor, sourcescount FROM groupcodes_main WHERE " \
                     + modified_query + order_query
 
             cur.execute(query)
             rows = cur.fetchall()
-            names = [row[0] for row in rows]
+            #names = [row[0] for row in rows], [row[1] for row in rows]
+            names = [{'name':row[0], 'counts':row[1]} for row in rows]
 
             #전체명칭 합하기
-            names_sum = ""
+            #names_sum = sum_items(names)
 
-            for name in names:
-                names_sum = names_sum + name
+            items_group['classgroup'].append(
+                {'niceclass':niceclass, 'represent':represents, 'names':names}
+            )
 
-                if index + 1 < len(names):
-                    names_sum = names_sum + ", "
+        items_groups.append(items_group)
 
-            items_group.append(
-                {'groupcode': groupcode,
-                 'niceclass': niceclass,
-                 'represent': represent_names,
-                 'names': names_sum})
     cur.close()
     conn.close()
 
-    return items_group
+    return items_groups
 
 
 
@@ -135,7 +134,6 @@ def modify_search_query(text):
         else:
             item_query=item.replace("(", "(name_kor LIKE '%") \
                 .replace(" and ", "%' and name_kor LIKE '%") \
-                .replace("and", "%' and name_kor LIKE '%") \
                 .replace(" & ", "%' and name_kor LIKE '%") \
                 .replace("&", "%' and name_kor LIKE '%") \
                 .replace(")", "%')")
@@ -146,3 +144,21 @@ def modify_search_query(text):
             modify_query = modify_query + " or "
 
     return modify_query
+
+def sum_items(items):
+    sum_text=""
+    print(items)
+    print("아이템 수:")
+    print(len(items))
+
+    index=0
+    for item in items:
+        print(item)
+        sum_text = sum_text + item
+
+        if index + 1 < len(items):
+            sum_text = sum_text + ", "
+
+        index+=1
+
+    return sum_text

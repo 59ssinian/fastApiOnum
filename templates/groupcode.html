@@ -38,15 +38,35 @@
               : 각 상품명은 ','로 구분하고, 두개를 동시에 포함하는 경우 ()로 묶어 표시
               ex) (미술 and 설치), 조각, 회화 / and 대신 & 이용 가능
           </div>
-
+          <button @click="this.seen=!this.seen"> 보기 </button>
       </div>
 
       <!-- 조회화면 -->
       <div class="row">
         <div id="screen">
             <ul>
-                <li v-for="(key, groupcode, niceclass, represent, names) in results" :key="key">
-                    [[ groupcode ]] : [[ niceclass ]] / [[ represent ]] / [[ names]]</li>
+                <li v-for="(item_group, key) in item_groups" :key="index">
+                    <h3><span @click="toggleItem(index)"> [[item_group.groupcode]] : </span>
+                        <span v-for="classgroup in item_group.classgroup">
+                            <span v-for="represent in classgroup.represent">
+                            [[ represent ]],
+                            </span>
+                        </span>
+                    </h3>
+                    <table v-if="selectedItem !== null">
+                        <tr v-for="classgroup in item_group.classgroup">
+                            <td style="width:50px"><b>[[ classgroup.niceclass[1] ]]류 : </b></td>
+                            <td v-if="seen" >
+                                <div>
+                                    <span v-for="name in classgroup.names" :class="getStyle(name.counts)">
+                                        [[ name.name ]],
+                                    </span>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </li>
+                </tbody>
             </ul>
         </div>
       </div>
@@ -61,28 +81,70 @@
         data() {
             return {
                 searchQuery: '',
-                results: []
+                sendingQuery:'',
+                item_groups: [],
+                seen:false,
+                selectedItem: null
             };
         },
         methods: {
             async search() {
                     if (!this.searchQuery) {
-                        this.results = [];
+                        this.item_groups = [];
                         return;
                     }
                     try {
-                        const response = await axios.get(`http://3.39.195.177:8000/search/${encodeURIComponent(this.searchQuery)}`);
-                        this.results = response.data;
-                        console.log(this.results);
+                        this.sendingQuery=this.searchQuery;
+                        this.searchQuery=this.sendingQuery+" 검색하고 있습니다.";
+                        const response = await axios.get(`http://3.39.195.177:8000/search/${encodeURIComponent(this.sendingQuery)}`);
+                        this.item_groups = response.data;
+                        this.searchQuery=this.sendingQuery+"의 검색결과";
+                        console.log(this.item_groups);
                     } catch (error) {
                         console.error('Error fetching data:', error);
                     }
 
             },
+            getStyle(value) {
+                if (value === 4) {
+                    return 'namestyle4';
+                } else if (value === 3) {
+                    return 'namestyle3';
+                } else if (value === 2) {
+                    return 'namestyle2';
+                } else {
+                    return 'namestyle1';
+                }
+            },
+            toggleItem(index) {
+                this.selectedItem = this.selectedItem === index ? null : index;
+            }
         },
         delimiters: ['[[', ']]']
     });
 
     app.mount('#app');
+
 </script>
 
+<style scoped>
+.namestyle4 {
+    font-size:1em;
+    color: red;
+}
+
+.namestyle3 {
+    font-size:1em;
+    color: blue;
+}
+
+.namestyle2 {
+    font-size:1em;
+    color: black;
+}
+
+.namestyle1 {
+    font-size:0.5em;
+    color: grey;
+}
+</style>
