@@ -36,6 +36,31 @@ def get_groupcode(search_expression):
 
     return result
 
+
+def get_groupcode_by_niceclass(niceclass):
+
+    # Connect to the PostgreSQL database
+    conn = get_connection()
+    cur = conn.cursor()
+
+    modified_query="niceclass="+str(niceclass)+";"
+
+    # Build the SQL query
+    query = "SELECT DISTINCT groupcode FROM groupcodes_main WHERE " + modified_query
+
+
+    # Execute the SQL query
+    cur.execute(query)
+
+    # Fetch the results
+    rows = cur.fetchall()
+
+    result = [row[0] for row in rows]
+    cur.close()
+    conn.close()
+
+    return result
+
 def get_items_by_groupcode(groupcodes):
 
     # Connect to the PostgreSQL database
@@ -50,6 +75,9 @@ def get_items_by_groupcode(groupcodes):
         #먼저 groupcode 입력
         items_group = {}
         items_group['groupcode']=groupcode
+
+        #front에서 사용할 변수 생성 : showContent
+        items_group['showContent'] = True
         items_group['classgroup'] = []
 
         modified_query = "groupcode = '"+groupcode+"' "
@@ -92,13 +120,13 @@ def get_items_by_groupcode(groupcodes):
 
             order_query = "ORDER BY sourcescount DESC"
 
-            query = "SELECT DISTINCT name_kor, sourcescount FROM groupcodes_main WHERE " \
+            query = "SELECT DISTINCT name_kor, sourcescount, groupcode, niceclass FROM groupcodes_main WHERE " \
                     + modified_query + order_query
 
             cur.execute(query)
             rows = cur.fetchall()
             #names = [row[0] for row in rows], [row[1] for row in rows]
-            names = [{'name':row[0], 'counts':row[1]} for row in rows]
+            names = [{'name':row[0], 'counts':row[1], 'groupcode':row[2], 'niceclass':row[3]} for row in rows]
 
             #전체명칭 합하기
             #names_sum = sum_items(names)
@@ -113,8 +141,6 @@ def get_items_by_groupcode(groupcodes):
     conn.close()
 
     return items_groups
-
-
 
 def modify_search_query(text):
 

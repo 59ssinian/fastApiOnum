@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>특허사무소 온음 상표 검색</title>
+
+    <link rel="stylesheet" href="/static/css/custom_style.css">
+    <script src="/static/js/popper.min.js"></script>
+    <script src="/static/js/bootstrap.js"></script>
+
+    <!-- Load Axios -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <!-- Load Vue.js-->
+    <script src="https://unpkg.com/vue@next"></script>
+
+
+</head>
+<body class="bg-light">
+  <div class="">
+    <div class="container">
+      <!-- 타이틀 -->
+      <div class="row">
+        <div class="text-center col-md-7 mx-auto">
+          <br>
+          <h3><b>nice class 검색</b></h3>
+        </div>
+      </div>
+    </div>
+    <div class="container" id="app">
+      <!-- 검색바 -->
+      <div class="row">
+        <div class="col-md-12 order-md-1">
+          <h6 class="mb-3"><b>상품 정보</b></h6>
+          <input v-model="searchQuery" class="form-control"
+                 placeholder="클래스 번호 입력" @keyup.enter="search">
+          <div>
+              숫자만 입력
+          </div>
+          <button @click="this.seen=!this.seen"> 보기 </button>
+      </div>
+
+      <!-- 조회화면 -->
+      <div class="row">
+        <div id="screen">
+            <ul>
+                <li v-for="(item_group, index) in item_groups" :key="index">
+                    <h3><span @click="toggleItem(index)"> [[item_group.groupcode]] : </span>
+                        <span v-for="classgroup in item_group.classgroup">
+                            <span v-for="represent in classgroup.represent">
+                            [[ represent ]],
+                            </span>
+                        </span>
+                    </h3>
+                    <table v-if="item_group.showContent">
+                        <tr v-for="classgroup in item_group.classgroup">
+                            <td style="vertical-align: top;width:50px"><b>[[ classgroup.niceclass[1] ]]류 : </b></td>
+                            <td v-if="seen" >
+                                <div>
+                                    <span v-for="name in classgroup.names" :class="getStyle(name.counts)">
+                                        [[ name.name ]],
+                                    </span>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </li>
+                </tbody>
+            </ul>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+</body>
+</html>
+
+<script>
+    const app = Vue.createApp({
+        data() {
+            return {
+                searchQuery: '',
+                sendingQuery:'',
+                item_groups: [],
+                seen:true,
+                selectedItem: null
+            };
+        },
+        methods: {
+            async search() {
+                    if (!this.searchQuery) {
+                        this.item_groups = [];
+                        return;
+                    }
+                    try {
+                        this.sendingQuery=this.searchQuery;
+                        this.searchQuery=this.sendingQuery+" 검색하고 있습니다.";
+                        const response = await axios.get(`http://3.39.195.177:8000/classsearch/${encodeURIComponent(this.sendingQuery)}`);
+                        this.item_groups = response.data;
+                        this.searchQuery=this.sendingQuery+"의 검색결과";
+                        console.log(this.item_groups);
+                    } catch (error) {
+                        console.error('Error fetching data:', error);
+                    }
+
+            },
+            getStyle(value) {
+                if (value === 4) {
+                    return 'namestyle4';
+                } else if (value === 3) {
+                    return 'namestyle3';
+                } else if (value === 2) {
+                    return 'namestyle2';
+                } else {
+                    return 'namestyle1';
+                }
+            },
+            toggleItem(index) {
+                this.item_groups[index].showContent = !this.item_groups[index].showContent;
+                console.log(this.item_groups)
+            }
+        },
+        delimiters: ['[[', ']]']
+    });
+
+    app.mount('#app');
+
+</script>
+
+<style scoped>
+.namestyle4 {
+    font-size:1em;
+    color: red;
+}
+
+.namestyle3 {
+    font-size:1em;
+    color: blue;
+}
+
+.namestyle2 {
+    font-size:1em;
+    color: black;
+}
+
+.namestyle1 {
+    font-size:0.5em;
+    color: grey;
+}
+</style>

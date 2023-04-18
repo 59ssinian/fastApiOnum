@@ -51,6 +51,10 @@ async def index(request: Request):
 async def index(request: Request):
     return templates.TemplateResponse("groupcode.html", {"request": request})
 
+@app.get("/niceclass", response_class=HTMLResponse)
+async def index(request: Request):
+    return templates.TemplateResponse("niceclass.html", {"request": request})
+
 @app.post("/submit")
 async def search_form(markk: List[str] = Form([]), marke: List[str] = Form([]),
                       classno: List[int] = Form([]), group: List[str] = Form([]), name: List[str] = Form([])):
@@ -103,6 +107,12 @@ class Input(BaseModel):
 @app.get("/search/{query}")
 async def search(query: str):
     groupcodes = groupcode.get_groupcode(query)
+    items_group = groupcode.get_items_by_groupcode(groupcodes)
+    return items_group
+
+@app.get("/classsearch/{query}")
+async def search(query: int):
+    groupcodes = groupcode.get_groupcode_by_niceclass(query)
     items_group = groupcode.get_items_by_groupcode(groupcodes)
     return items_group
 

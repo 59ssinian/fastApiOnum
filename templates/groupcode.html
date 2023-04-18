@@ -18,34 +18,39 @@
 </head>
 <body class="bg-light">
   <div class="">
-    <div class="container">
-      <!-- 타이틀 -->
-      <div class="row">
-        <div class="text-center col-md-7 mx-auto">
-          <br>
-          <h3><b>상표 유사군 코드 검색</b></h3>
-        </div>
-      </div>
-    </div>
     <div class="container" id="app">
       <!-- 검색바 -->
-      <div class="row">
+      <div class="row menu">
         <div class="col-md-12 order-md-1">
-          <h6 class="mb-3"><b>상품 정보</b></h6>
+          <h3 class="mb-3"><b>상표 유사군 코드 검색</b></h3>
           <input v-model="searchQuery" class="form-control"
                  placeholder="상품명 검색식 입력" @keyup.enter="search">
           <div>
+              <span @click="this.seen=!this.seen"> <a>((상세보기/감추기))</a> </span>
               : 각 상품명은 ','로 구분하고, 두개를 동시에 포함하는 경우 ()로 묶어 표시
               ex) (미술 and 설치), 조각, 회화 / and 대신 & 이용 가능
           </div>
-          <button @click="this.seen=!this.seen"> 보기 </button>
+          <div id="results">
+              <table style="background:#FFFFFF;color:black">
+                  <tr v-for="collect_name in collect_names">
+                      <td>
+                          [[ collect_name.niceclass ]] 류 :
+                      </td>
+                      <td>
+                          <span v-for="namelist in collect_name.namelist" @click="collectNames(namelist)">
+                              [[ namelist.name ]],
+                          </span>
+                      </td>
+                  </tr>
+              </table>
+          </div>
+        </div>
       </div>
-
       <!-- 조회화면 -->
-      <div class="row">
+      <div class="row" style="margin-top:200px">
         <div id="screen">
             <ul>
-                <li v-for="(item_group, key) in item_groups" :key="index">
+                <li v-for="(item_group, index) in item_groups" :key="index">
                     <h3><span @click="toggleItem(index)"> [[item_group.groupcode]] : </span>
                         <span v-for="classgroup in item_group.classgroup">
                             <span v-for="represent in classgroup.represent">
@@ -53,12 +58,13 @@
                             </span>
                         </span>
                     </h3>
-                    <table v-if="selectedItem !== null">
+                    <table v-if="item_group.showContent">
                         <tr v-for="classgroup in item_group.classgroup">
-                            <td style="width:50px"><b>[[ classgroup.niceclass[1] ]]류 : </b></td>
+                            <td style="vertical-align: top;width:50px"><b>[[ classgroup.niceclass[1] ]]류 : </b></td>
                             <td v-if="seen" >
                                 <div>
-                                    <span v-for="name in classgroup.names" :class="getStyle(name.counts)">
+                                    <span v-for="(name, index2) in classgroup.names"
+                                          :key="index2" :class="getStyle(name.counts)" @click="collectNames(name)">
                                         [[ name.name ]],
                                     </span>
                                 </div>
@@ -71,7 +77,6 @@
         </div>
       </div>
     </div>
-    </div>
   </div>
 </body>
 </html>
@@ -83,8 +88,8 @@
                 searchQuery: '',
                 sendingQuery:'',
                 item_groups: [],
-                seen:false,
-                selectedItem: null
+                seen:true,
+                collect_names: []
             };
         },
         methods: {
@@ -117,7 +122,40 @@
                 }
             },
             toggleItem(index) {
-                this.selectedItem = this.selectedItem === index ? null : index;
+                this.item_groups[index].showContent = !this.item_groups[index].showContent;
+                console.log(this.item_groups)
+            },
+            collectNames(name) {
+              // check if the niceclass of the clicked item already exists in the group
+              const name_index = this.collect_names.findIndex((g) => g.niceclass === name.niceclass);
+              if (name_index !== -1) {
+                // if it does, add the code and name of the clicked item to the existing namelist
+                const list_name_index = this.collect_names[name_index].namelist.findIndex((g) => g.name === name.name);
+                if (list_name_index !== -1) {
+                  this.collect_names[name_index].namelist.splice(list_name_index, 1)
+                } else {
+                  this.collect_names[name_index].namelist.push({ code: name.groupcode, name: name.name });
+                }
+              } else {
+                // if it doesn't, create a new object with the niceclass and namelist attributes
+                const newGroup = {
+                  niceclass: name.niceclass,
+                  namelist: [{ code: name.groupcode, name: name.name, niceclass: name.niceclass }]
+                };
+                this.collect_names.push(newGroup);
+              }
+            },
+            removeNames(name) {
+              // check if the niceclass of the clicked item already exists in the group
+              const name_index = this.collect_names.findIndex((g) => g.niceclass === name.niceclass);
+              if (name_index !== -1) {
+                // if it does, add the code and name of the clicked item to the existing namelist
+                const list_name_index = this.collect_names[name_index].namelist.findIndex((g) => g.name === name.name);
+                if (list_name_index !== -1) {
+                  this.collect_names[name_index].namelist.splice(list_name_index, 1)
+                }
+              }
+              this.collect_names.push(newGroup);
             }
         },
         delimiters: ['[[', ']]']
@@ -147,4 +185,17 @@
     font-size:0.5em;
     color: grey;
 }
+</style>
+
+<style>
+    /* Set the properties of the menu div */
+    .menu {
+        position: fixed; /* Position the menu relative to the viewport */
+        top: 0; /* Pin the menu to the top of the viewport */
+        width: 100%; /* Make the menu span the full width of the viewport */
+        background-color: #333; /* Set the background color of the menu */
+        color: #fff; /* Set the font color of the menu */
+        padding: 10px; /* Add some padding to the menu */
+        box-shadow: 0px 2px 2px rgba(0,0,0,0.3); /* Add a shadow effect to the menu */
+    }
 </style>
