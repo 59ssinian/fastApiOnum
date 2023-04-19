@@ -2,12 +2,15 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>특허사무소 온음 상표 검색</title>
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <!--
     <link rel="stylesheet" href="/static/css/custom_style.css">
     <script src="/static/js/popper.min.js"></script>
     <script src="/static/js/bootstrap.js"></script>
-
+    -->
     <!-- Load Axios -->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
@@ -17,47 +20,63 @@
 
 </head>
 <body class="bg-light">
-  <div class="">
+    <section class="section" id="app">
     <div class="container">
-      <!-- 타이틀 -->
-      <div class="row">
-        <div class="text-center col-md-7 mx-auto">
-          <br>
-          <h3><b>nice class 검색</b></h3>
+        <!-- 검색바 -->
+        <div class="columns navbar is-fixed-top is-full box">
+        <div class="column">
+            <div class="block">
+            <h3 class="subtitle"><b>nice class 검색</b></h3><span @click="this.seen=!this.seen"> <a>((상세보기/감추기))</a> </span>
+            </div>
+            <div class="block">
+              <input v-model="searchQuery" class="input is-normal "
+                     placeholder="클래스 번호 입력" @keyup.enter="search">
+            </div>
+	            <div id="results" class="block">
+					<table>
+						<tr v-for="collect_name in collect_names">
+							<td>
+							  [[ collect_name.niceclass ]]
+							</td>
+							<td>
+								<table class="table">
+									<tr v-for="groupcodes in collect_name.groupcodes">
+										<td>
+											[[ groupcodes.groupcode ]]
+										</td>
+										<td>
+										  <span v-for="name in groupcodes.names" @click="collectNames(name)">
+										      [[ name.name ]],
+										  </span>
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</table>
+	            </div>
         </div>
-      </div>
-    </div>
-    <div class="container" id="app">
-      <!-- 검색바 -->
-      <div class="row">
-        <div class="col-md-12 order-md-1">
-          <h6 class="mb-3"><b>상품 정보</b></h6>
-          <input v-model="searchQuery" class="form-control"
-                 placeholder="클래스 번호 입력" @keyup.enter="search">
-          <div>
-              숫자만 입력
-          </div>
-          <button @click="this.seen=!this.seen"> 보기 </button>
-      </div>
-
-      <!-- 조회화면 -->
-      <div class="row">
-        <div id="screen">
+        </div>
+	    <div style="clear:both;margin-top:200px"></div>
+        <!-- 조회화면 -->
+        <div style="clear:both;" class="columns">
+        <div id="screen" class="column">
             <ul>
-                <li v-for="(item_group, index) in item_groups" :key="index">
-                    <h3><span @click="toggleItem(index)"> [[item_group.groupcode]] : </span>
+                <li v-for="(item_group, index) in item_groups" :key="index" class="block" >
+                    <h1 @click="toggleItem(index)"> [[item_group.groupcode]] :
                         <span v-for="classgroup in item_group.classgroup">
                             <span v-for="represent in classgroup.represent">
                             [[ represent ]],
                             </span>
                         </span>
-                    </h3>
-                    <table v-if="item_group.showContent">
+                    </h1>
+                    <table v-if="item_group.showContent" class="table">
                         <tr v-for="classgroup in item_group.classgroup">
-                            <td style="vertical-align: top;width:50px"><b>[[ classgroup.niceclass[1] ]]류 : </b></td>
+                            <td class="" style="vertical-align: top;"><b>[[ classgroup.niceclass[1] ]]</b></td>
                             <td v-if="seen" >
                                 <div>
-                                    <span v-for="name in classgroup.names" :class="getStyle(name.counts)">
+                                    <span v-for="(name, index2) in classgroup.names"
+                                          :key="index2" :class="getStyle(name.counts)" @click="collectNames(name)">
                                         [[ name.name ]],
                                     </span>
                                 </div>
@@ -65,13 +84,11 @@
                         </tr>
                     </table>
                 </li>
-                </tbody>
             </ul>
         </div>
       </div>
     </div>
-    </div>
-  </div>
+  </section>
 </body>
 </html>
 
@@ -83,7 +100,7 @@
                 sendingQuery:'',
                 item_groups: [],
                 seen:true,
-                selectedItem: null
+                collect_names: []
             };
         },
         methods: {
@@ -118,7 +135,79 @@
             toggleItem(index) {
                 this.item_groups[index].showContent = !this.item_groups[index].showContent;
                 console.log(this.item_groups)
-            }
+            },
+            collectNames(name) {
+ 
+                // 기존에 name이 있는지 검토하고, 없는 경우 삽입, 있는 경우 삭제
+
+	            
+                // 클릭된 아이템의 niceclass 번호 검색
+                const niceclass_index = this.collect_names.findIndex((g) => g.niceclass === name.niceclass);
+                // niceclass가 없는 경우
+                if (niceclass_index !== -1) {
+   
+                    // 클릭된 아이템의 groupcode 검색
+                    const groupcode_index = this.collect_names[niceclass_index].groupcodes.findIndex((g) => g.groupcode === name.groupcode);
+                    // niceclass있는데, groupcode가 없는 경우
+                    if (groupcode_index !== -1) {
+                    
+						// 클래스 그룹 내의 name 검색
+                        const name_index = this.collect_names[niceclass_index].groupcodes[groupcode_index].names.findIndex((g) => g.name === name.name);
+                        
+						// initialization 에러 발생을 위한 임시처리 -> 추후 해결 필요.
+						const groupcode_index2 = groupcode_index
+	                    const name_index2 = name_index
+	                    const niceclass_index2 = niceclass_index
+						// 기존에 있는 경우 삭제
+                        if (name_index !== -1) {
+							// 모두 있는 경우 => 삭제
+                            this.collect_names[niceclass_index2].groupcodes[groupcode_index2].names.splice(name_index2, 1)
+  
+	                        // name 삭제 후 나머지 상위 그룹 처리
+	                        
+                            // groupcode내 다른 데이터 없으면, 나머지 groupcode 삭제
+							if (this.collect_names[niceclass_index2].groupcodes[groupcode_index2].names.length < 1 ) {
+                                this.collect_names[niceclass_index2].groupcodes.splice(groupcode_index2, 1)
+                            }
+                            
+                            //나머지 niceclass 내에 다른 groupcode 없으면 삭제
+                            if (this.collect_names[niceclass_index2].groupcodes.length < 1 ) {
+                                this.collect_names.splice(niceclass_index2, 1)
+                            }
+							
+							// 삭제 종료
+							return
+							
+						// 기존에 없는 경우 추가#1 : groupcode는 있는 경우.
+                        } else {
+                            this.collect_names[niceclass_index].groupcodes[groupcode_index].names.push({
+                                niceclass: name.niceclass,
+                                code: name.groupcode,
+                                name: name.name
+                            });
+							
+							// 삽입#1 종료
+	                        return
+                        }
+						// 기존에 없는 경우 추가#2 : class는 있는 경우.
+                    } else {
+                        this.collect_names[niceclass_index].groupcodes.push(
+                            { groupcode: name.groupcode, names : [{name: name.name, groupcode: name.groupcode, niceclass: name.niceclass }]})
+	                    
+	                    // 삽입#2 종료
+	                        return
+                    }
+                }
+                // 기존에 없는 경우 추가#3 : 아무것도 없는 경우.
+                const newGroup = {
+                    niceclass: name.niceclass,
+                    groupcodes: [{ groupcode: name.groupcode, names : [{name: name.name, groupcode: name.groupcode, niceclass: name.niceclass }]}]
+                  };
+                  this.collect_names.push(newGroup);
+				  
+				  // 삽입#3 종료
+	              return
+            },
         },
         delimiters: ['[[', ']]']
     });
