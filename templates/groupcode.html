@@ -36,7 +36,7 @@
 					<table>
 						<tr v-for="collect_name in collect_names">
 							<td>
-							  [[ collect_name.niceclass ]]
+							  [[ collect_name.niceclass ]] ([[ collect_name.niceclasscount ]])
 							</td>
 							<td>
 								<table class="table">
@@ -161,7 +161,8 @@
                         if (name_index !== -1) {
 							// 모두 있는 경우 => 삭제
                             this.collect_names[niceclass_index2].groupcodes[groupcode_index2].names.splice(name_index2, 1)
-  
+                            
+	                        this.collect_names[niceclass_index2].niceclasscount = this.collect_names[niceclass_index2].niceclasscount-1
 	                        // name 삭제 후 나머지 상위 그룹 처리
 	                        
                             // groupcode내 다른 데이터 없으면, 나머지 groupcode 삭제
@@ -175,7 +176,7 @@
                             }
 							
 							// 삭제 종료
-							return
+	                        return
 							
 						// 기존에 없는 경우 추가#1 : groupcode는 있는 경우.
                         } else {
@@ -184,7 +185,8 @@
                                 code: name.groupcode,
                                 name: name.name
                             });
-							
+							this.collect_names[niceclass_index].niceclasscount = this.collect_names[niceclass_index].niceclasscount+1
+	                        
 							// 삽입#1 종료
 	                        return
                         }
@@ -193,19 +195,34 @@
                         this.collect_names[niceclass_index].groupcodes.push(
                             { groupcode: name.groupcode, names : [{name: name.name, groupcode: name.groupcode, niceclass: name.niceclass }]})
 	                    
+                        this.collect_names[niceclass_index].niceclasscount = this.collect_names[niceclass_index].niceclasscount+1
+	                       
+	                       
 	                    // 삽입#2 종료
-	                        return
+	                    return
                     }
                 }
                 // 기존에 없는 경우 추가#3 : 아무것도 없는 경우.
-                const newGroup = {
+                const niceclass_index4 = this.collect_names.findIndex((g) => g.niceclass === name.niceclass);
+				if (niceclass_index4 !== -1) {
+					const newGroup = {
                     niceclass: name.niceclass,
                     groupcodes: [{ groupcode: name.groupcode, names : [{name: name.name, groupcode: name.groupcode, niceclass: name.niceclass }]}]
-                  };
-                  this.collect_names.push(newGroup);
-				  
-				  // 삽입#3 종료
-	              return
+                    };
+					this.collect_names.push(newGroup);
+					this.collect_names[niceclass_index4].niceclasscount = this.collect_names[niceclass_index4].niceclasscount+1
+	    
+	    
+				} else {
+					const newGroup = {
+                    niceclass: name.niceclass,niceclasscount:1,
+                    groupcodes: [{ groupcode: name.groupcode, names : [{name: name.name, groupcode: name.groupcode, niceclass: name.niceclass }]}]
+                    };
+					this.collect_names.push(newGroup);
+				}
+
+				// 삽입#3 종료
+	            return
             },
         },
         delimiters: ['[[', ']]']
