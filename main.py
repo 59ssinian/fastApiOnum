@@ -105,14 +105,14 @@ class Input(BaseModel):
     input_value: str
 
 
-@app.get("/search/{query}")
-async def search(query: str):
+@app.get("/searchByName/{query}")
+async def searchByName(query: str):
     groupcodes = groupcode.get_groupcode(query)
     items_group = groupcode.get_items_by_groupcode(groupcodes)
     return items_group
 
-@app.get("/classsearch/{query}")
-async def search(query: int):
+@app.get("/searchByClass/{query}")
+async def searchByClass(query: int):
     groupcodes = groupcode.get_groupcode_by_niceclass(query)
     items_group = groupcode.get_items_by_groupcode(groupcodes)
     return items_group
