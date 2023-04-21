@@ -5,12 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>특허사무소 온음 상표 검색</title>
 
+	<!-- bulma.css -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
-    <!--
-    <link rel="stylesheet" href="/static/css/custom_style.css">
-    <script src="/static/js/popper.min.js"></script>
-    <script src="/static/js/bootstrap.js"></script>
-    -->
+
     <!-- Load Axios -->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
@@ -52,9 +49,13 @@
 							<tr v-for="collect_name in collect_names">
 								<td>
 								  [[ collect_name.niceclass ]] ([[ collect_name.niceclasscount ]])
+									<label class="checkbox">
+										<input type="checkbox"
+									    @click="collect_name.niceclassShowContent = !collect_name.niceclassShowContent">
+									</label>
 								</td>
 								<td>
-									<table class="table">
+									<table class="table" v-if="collect_name.niceclassShowContent">
 										<tr v-for="groupcodes in collect_name.groupcodes">
 											<td>
 												[[ groupcodes.groupcode ]]
@@ -80,7 +81,8 @@
 		            <span @click="this.seen=!this.seen"> <a>((상세보기/감추기))</a> </span>
 			        <ul>
 		                <li v-for="(item_group, index) in item_groups" :key="index" class="block" >
-		                    <h1 @click="toggleItem(index)"> [[item_group.groupcode]] :
+		                    <h1 @click="item_groups[index].showContent = !item_groups[index].showContent">
+			                    [[item_group.groupcode]] :
 		                        <span v-for="classgroup in item_group.classgroup">
 		                            <span v-for="represent in classgroup.represent">
 		                            [[ represent ]],
@@ -93,7 +95,8 @@
 		                            <td v-if="seen" >
 		                                <div>
 		                                    <span v-for="(name, index2) in classgroup.names"
-		                                          :key="index2" :class="getStyle(name.counts)" @click="collectNames(name)">
+		                                          :key="index2" :class="getStyle(name.counts)"
+		                                          @click="collectNames(name)">
 		                                        [[ name.name ]],
 		                                    </span>
 		                                </div>
@@ -157,7 +160,6 @@
             },
             toggleItem(index) {
                 this.item_groups[index].showContent = !this.item_groups[index].showContent;
-                console.log(this.item_groups)
             },
             collectNames(name) {
  
@@ -226,6 +228,7 @@
                 // 기존에 없는 경우 추가#3 : 아무것도 없는 경우.
                 const niceclass_index4 = this.collect_names.findIndex((g) => g.niceclass === name.niceclass);
 				if (niceclass_index4 !== -1) {
+					// 기존에 다른 groupcode 있는 경우
 					const newGroup = {
                     niceclass: name.niceclass,
                     groupcodes: [{ groupcode: name.groupcode, names : [{name: name.name, groupcode: name.groupcode, niceclass: name.niceclass }]}]
@@ -235,8 +238,9 @@
 	    
 	    
 				} else {
+					// 정말 아무것도 없는 경우
 					const newGroup = {
-                    niceclass: name.niceclass,niceclasscount:1,
+                    niceclass: name.niceclass,niceclasscount:1,niceclassShowContent:true,
                     groupcodes: [{ groupcode: name.groupcode, names : [{name: name.name, groupcode: name.groupcode, niceclass: name.niceclass }]}]
                     };
 					this.collect_names.push(newGroup);

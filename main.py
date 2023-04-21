@@ -56,7 +56,7 @@ async def index(request: Request):
 async def index(request: Request):
     return templates.TemplateResponse("niceclass.html", {"request": request})
 
-@app.post("/submit")
+@app.post("/search_report")
 async def search_form(markk: List[str] = Form([]), marke: List[str] = Form([]),
                       classno: List[int] = Form([]), group: List[str] = Form([]), name: List[str] = Form([])):
 

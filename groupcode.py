@@ -89,13 +89,13 @@ def get_items_by_groupcode(groupcodes):
 
         cur.execute(query)
         rows = cur.fetchall()
-        print(rows)
+        #print(rows)
         niceclasses = [row[0] for row in rows]
 
-        print(niceclasses)
+        #print(niceclasses)
 
         for niceclass in enumerate(niceclasses):
-            print("niceclass:"+str(niceclass[1]))
+            #print("niceclass:"+str(niceclass[1]))
             # 대표명칭 찾기
             modified_query = "groupcode = '" + groupcode \
                              + "' and niceclass = "+ str(niceclass[1]) \
@@ -173,13 +173,13 @@ def modify_search_query(text):
 
 def sum_items(items):
     sum_text=""
-    print(items)
-    print("아이템 수:")
-    print(len(items))
+    #print(items)
+    #print("아이템 수:")
+    #print(len(items))
 
     index=0
     for item in items:
-        print(item)
+        #print(item)
         sum_text = sum_text + item
 
         if index + 1 < len(items):
