@@ -4,10 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="515296ce-6c7f-4ab9-b670-0ff297a39be5" name="Changes" comment="front edn stage 0.57">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/groupcode.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/groupcode.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/groupcodes2.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/groupcodes2.html" afterDir="false" />
+    <list default="true" id="515296ce-6c7f-4ab9-b670-0ff297a39be5" name="Changes" comment="기존세팅적용">
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2023-04-12__10_48__Changes_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2023-04-12_오후_10_48_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2023-04-13__8_40__Changes_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2023-04-13_오전_8_40_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase__Changes_.xml" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,7 +28,6 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="PUSH_AUTO_UPDATE" value="true" />
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="MarkdownSettingsMigration">
@@ -84,7 +86,7 @@
       <method v="2" />
     </configuration>
     <configuration name="fastApiOnum" type="Python.FastAPI">
-      <option name="additionalOptions" value="--reload --host 0.0.0.0 --port 8000 --workers 4" />
+      <option name="additionalOptions" value="--reload --host 0.0.0.0 --port 8000" />
       <option name="file" value="$PROJECT_DIR$/main.py" />
       <module name="fastApiOnum" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -140,13 +142,7 @@
       <workItem from="1681775190429" duration="9453000" />
       <workItem from="1681793234001" duration="8216000" />
       <workItem from="1681860601341" duration="8178000" />
-      <workItem from="1681873674942" duration="4904000" />
-      <workItem from="1681885376554" duration="1971000" />
-      <workItem from="1681960763871" duration="1596000" />
-      <workItem from="1682032710179" duration="10260000" />
-      <workItem from="1682049497003" duration="3890000" />
-      <workItem from="1682060614257" duration="1316000" />
-      <workItem from="1682122828037" duration="8551000" />
+      <workItem from="1681873674942" duration="4447000" />
     </task>
     <task id="LOCAL-00001" summary="기존세팅적용">
       <created>1680506751711</created>
@@ -218,35 +214,7 @@
       <option name="project" value="LOCAL" />
       <updated>1681869260095</updated>
     </task>
-    <task id="LOCAL-00011" summary="front edn stage 0.56">
-      <created>1681878647856</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1681878647856</updated>
-    </task>
-    <task id="LOCAL-00012" summary="front edn stage 0.56">
-      <created>1681887286188</created>
-      <option name="number" value="00012" />
-      <option name="presentableId" value="LOCAL-00012" />
-      <option name="project" value="LOCAL" />
-      <updated>1681887286188</updated>
-    </task>
-    <task id="LOCAL-00013" summary="front edn stage 0.57">
-      <created>1682046709112</created>
-      <option name="number" value="00013" />
-      <option name="presentableId" value="LOCAL-00013" />
-      <option name="project" value="LOCAL" />
-      <updated>1682046709112</updated>
-    </task>
-    <task id="LOCAL-00014" summary="front edn stage 0.57">
-      <created>1682053384613</created>
-      <option name="number" value="00014" />
-      <option name="presentableId" value="LOCAL-00014" />
-      <option name="project" value="LOCAL" />
-      <updated>1682053384613</updated>
-    </task>
-    <option name="localTasksCounter" value="15" />
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -269,12 +237,10 @@
     <MESSAGE value="front edn stage 0.4" />
     <MESSAGE value="front edn stage 0.5" />
     <MESSAGE value="front edn stage 0.55" />
-    <MESSAGE value="front edn stage 0.56" />
-    <MESSAGE value="front edn stage 0.57" />
-    <option name="LAST_COMMIT_MESSAGE" value="front edn stage 0.57" />
+    <option name="LAST_COMMIT_MESSAGE" value="front edn stage 0.55" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/fastApiOnum$fastApiOnum.coverage" NAME="fastApiOnum Coverage Results" MODIFIED="1681997680593" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/fastApiOnum$main.coverage" NAME="main Coverage Results" MODIFIED="1680148502568" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/fastApiOnum$fastApiOnum.coverage" NAME="fastApiOnum Coverage Results" MODIFIED="1682125808331" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
   </component>
 </project>

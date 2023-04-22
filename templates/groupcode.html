@@ -18,11 +18,52 @@
 </head>
 <body>
     <div id="app">
-		<section class="container">
+		<section class="is-full section" >
+            <div class="columns">
+                <div class="column is-2"></div>
+                <div class="column is-7">
+                <!-- 검색바 -->
+                    <div>
+                        <nav class="breadcrumb is-small" aria-label="breadcrumbs">
+                            <ul>
+                                <li><a href="#">홈</a></li>
+                                <li class="is-active"><a href="#" aria-current="page">지정상품검색</a></li>
+                            </ul>
+                        </nav>
+
+                        <div class="columns">
+                            <div class="column is-8">
+                                <input v-model="searchQuery" class="input is-normal is-rounded"
+                                placeholder="클래스 번호 입력 또는 물품 명칭 입력 (* 각 상품명은 ','로 구분하고, 두개를 동시에 포함하는 경우 ()로 묶어 표시.  ex) (미술 and 설치), 조각, 회화 / and 대신 & 이용 가능)"
+                                @keyup.enter="search" id="search-bar"></input>
+                            </div>
+                            <div class="column is-2 is-vcentered">
+                                <label class="radio control">
+                                    <input type="radio" value="searchByName" v-model="searchType" checked @click="clear_searchQuery">
+                                이름
+                                </label>
+                            </div>
+                            <div class="column is-2 is-vcentered">
+                                <label class="radio control">
+                                    <input type="radio" value="searchByClass" v-model="searchType" @click="clear_searchQuery">
+                                Class
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column is-3"></div>
+            </div>
+        </section>
+
+        <section class="container">
 		<div class="columns">
-		<!-- nav 화면 : 1/12 -->
-			<div class="column is-1 left-section">
+		<!-- nav 화면 : 2/12 -->
+			<div class="column is-2 left-section">
 				<ul>
+                    <li>
+                        <a href="#search-bar">검색바</a>
+                    </li>
                     <li v-for="(item_group, index) in item_groups">
                         <a :href="'#section-'+index">[[ item_group.groupcode ]]</a>
                     </li>
@@ -33,38 +74,7 @@
 		    <!-- 결과 화면 : 7 /12 --> <!-- 조회화면 -->
 			
 			<div class="column is-7 middle-section" >
-	            <!-- 검색바 -->
-			    <div class="is-full box">
-		
-				    
-				    <nav class="breadcrumb is-small" aria-label="breadcrumbs">
-						<ul>
-						    <li><a href="#">홈</a></li>
-						    <li class="is-active"><a href="#" aria-current="page">지정상품검색</a></li>
-						</ul>
-			        </nav>
-					
-		
-		            <div class="columns is-full">
-			            <div class="column is-8">
-				            <input v-model="searchQuery" class="input is-normal is-rounded"
-	                        placeholder="클래스 번호 입력 또는 물품 명칭 입력 (* 각 상품명은 ','로 구분하고, 두개를 동시에 포함하는 경우 ()로 묶어 표시.  ex) (미술 and 설치), 조각, 회화 / and 대신 & 이용 가능)"
-	                        @keyup.enter="search"></input>
-				        </div>
-	                    <div class="column is-2">
-		                    <label class="radio control">
-					            <input type="radio" value="searchByName" v-model="searchType" checked @click="clear_searchQuery">
-					        이름
-					        </label>
-			            </div>
-			            <div class="column is-2">
-				            <label class="radio control">
-					            <input type="radio" value="searchByClass" v-model="searchType" @click="clear_searchQuery">
-					        Class
-					        </label>
-	                    </div>
-		            </div>
-			    </div>
+
 				<div id="screen">
 					<span @click="this.seen=!this.seen"> <a>((상세보기/감추기))</a> </span>
 			        <ul>
@@ -99,7 +109,7 @@
 				
 		    <!-- 정리 공간 : 4 / 12-->
 		   
-			<div class="column is-4 right-section">
+			<div class="column is-3 right-section">
 				<div id="results" class="collect_names">
 						<table>
 							<tr v-for="collect_name in collect_names">
@@ -288,64 +298,54 @@
     font-size:1em;
     color: red;
 }
-
 .namestyle3 {
     font-size:1em;
     color: blue;
 }
-
 .namestyle2 {
     font-size:1em;
     color: black;
 }
-
 .namestyle1 {
     font-size:0.5em;
     color: grey;
 }
-
 .collect_names {
 	font-size:0.8em;
 }
 
 /* left-section, right-section, middle-section 은 정리 필요 */
-
-.left-section,.right-section {
+.left-section,.right-section,.top-section {
         position: fixed;
-		top: 0;
-        bottom: 0;
+		/*top: 0;
+        bottom: 0;		 */
         height: 100%;
         overflow: auto;
 		z-index : 20;      }
 
       .left-section {
         left: 0;
-        /*
-	      width: calc(100% / 12 * 1);
-	      
-         */
+        /* width: calc(100% / 12 * 1);*/
         background-color: #eee;
       }
 
       .right-section {
         right: 0;
-	      /*
-        width: calc(100% / 12 * 4);
-        
-	       */
+          /*        width: calc(100% / 12 * 4);	       */
         background-color: #ccc;
       }
 
       .middle-section {
-        /*
-        
-        margin-right: calc(100% / 12 * 4);
-         */
-        
-        width: calc(100% / 12 * 8.5)!important;
-        
-        margin-left: 8px;
-        
-        overflow-y: scroll;
+        margin-left: calc(100% / 12 * 2);
+        margin-right: calc(100% / 12 * 3);
+          /*        width: calc(100% / 12 * 8.5)!important;          */
+        overflow-y: hidden;
+      }
+      .top-section {
+        margin-left: calc(100% / 12 * 2);
+        margin-right: calc(100% / 12 * 3);
+      }
+      .has-fixed-top{
+          margin-top:100px;
       }
 </style>
