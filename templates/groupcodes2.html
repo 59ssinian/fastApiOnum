@@ -1,16 +1,13 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" class="has-navbar-fixed-top">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>특허사무소 온음 상표 검색</title>
 
+	<!-- bulma.css -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
-    <!--
-    <link rel="stylesheet" href="/static/css/custom_style.css">
-    <script src="/static/js/popper.min.js"></script>
-    <script src="/static/js/bootstrap.js"></script>
-    -->
+
     <!-- Load Axios -->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
@@ -19,27 +16,53 @@
 
 
 </head>
-<body class="bg-light">
-    <section class="section" id="app">
-    <div class="container">
-        <!-- 검색바 -->
-        <div class="columns navbar is-fixed-top is-full box">
-        <div class="column">
-            <div class="block">
-            <h3 class="subtitle"><b>nice class 검색</b></h3><span @click="this.seen=!this.seen"> <a>((상세보기/감추기))</a> </span>
-            </div>
-            <div class="block">
-              <input v-model="searchQuery" class="input is-normal "
-                     placeholder="클래스 번호 입력" @keyup.enter="search">
-            </div>
-	            <div id="results" class="block">
+<body>
+    <main id="app">
+	    
+	    
+	    <!-- 검색바 -->
+	    
+	    <!-- 결과 화면 : 7 /12 -->
+	    
+	    <!-- 정리 공간 : 5 / 12 -->
+	    
+	    
+	    <div class="container">
+	        <!-- 검색바 -->
+		    <div class="navbar is-fixed-top is-full box">
+	            <div class="section">
+	            <h3 class="subtitle"><b>상표 유사군 코드 검색</b></h3>
+	            </div>
+			    <div style="clear:both;"></div>
+				<div class="columns is-full">
+	                <div class="column is-2 control">
+					  <label class="radio">
+					    <input type="radio" value="searchByName" v-model="searchType" checked @click="clear_searchQuery">
+					    이름
+					  </label>
+					  <label class="radio">
+					    <input type="radio" value="searchByClass" v-model="searchType" @click="clear_searchQuery">
+					    Class
+					  </label>
+	                </div>
+					<div class="column is-10">
+		                <input v-model="searchQuery" class="input is-small "
+	                        placeholder="클래스 번호 입력 또는 물품 명칭 입력 (* 각 상품명은 ','로 구분하고, 두개를 동시에 포함하는 경우 ()로 묶어 표시.  ex) (미술 and 설치), 조각, 회화 / and 대신 & 이용 가능)"
+	                        @keyup.enter="search"></input>
+	                </div>
+				</div>
+	            <div id="results" class="collect_names">
 					<table>
 						<tr v-for="collect_name in collect_names">
 							<td>
-							  [[ collect_name.niceclass ]]
+							  [[ collect_name.niceclass ]] ([[ collect_name.niceclasscount ]])
+								<label class="checkbox">
+									<input type="checkbox"
+								    @click="collect_name.niceclassShowContent = !collect_name.niceclassShowContent">
+								</label>
 							</td>
 							<td>
-								<table class="table">
+								<table class="table" v-if="collect_name.niceclassShowContent">
 									<tr v-for="groupcodes in collect_name.groupcodes">
 										<td>
 											[[ groupcodes.groupcode ]]
@@ -55,39 +78,43 @@
 						</tr>
 					</table>
 	            </div>
-        </div>
-      </div>
-        <!-- 조회화면 -->
-        <div class="columns">
-        <div id="screen" class="column">
-            <ul>
-                <li v-for="(item_group, index) in item_groups" :key="index" class="block" >
-                    <h1 @click="toggleItem(index)"> [[item_group.groupcode]] :
-                        <span v-for="classgroup in item_group.classgroup">
-                            <span v-for="represent in classgroup.represent">
-                            [[ represent ]],
-                            </span>
-                        </span>
-                    </h1>
-                    <table v-if="item_group.showContent" class="table">
-                        <tr v-for="classgroup in item_group.classgroup">
-                            <td class="" style="vertical-align: top;"><b>[[ classgroup.niceclass[1] ]]</b></td>
-                            <td v-if="seen" >
-                                <div>
-                                    <span v-for="(name, index2) in classgroup.names"
-                                          :key="index2" :class="getStyle(name.counts)" @click="collectNames(name)">
-                                        [[ name.name ]],
-                                    </span>
-                                </div>
-                            </td>
-                        </tr>
-                    </table>
-                </li>
-            </ul>
-        </div>
-      </div>
-    </div>
-  </section>
+	        </div>
+	    </div>
+	    <div class="container columns" style="clear:both;">
+	        <!-- 조회화면 -->
+	        <div class="">
+		        <div id="screen" class="column">
+		            <span @click="this.seen=!this.seen"> <a>((상세보기/감추기))</a> </span>
+			        <ul>
+		                <li v-for="(item_group, index) in item_groups" :key="index" class="block" >
+		                    <h1 @click="item_groups[index].showContent = !item_groups[index].showContent">
+			                    [[item_group.groupcode]] :
+		                        <span v-for="classgroup in item_group.classgroup">
+		                            <span v-for="represent in classgroup.represent">
+		                            [[ represent ]],
+		                            </span>
+		                        </span>
+		                    </h1>
+		                    <table v-if="item_group.showContent" class="table">
+		                        <tr v-for="classgroup in item_group.classgroup">
+		                            <td class="" style="vertical-align: top;"><b>[[ classgroup.niceclass[1] ]]</b></td>
+		                            <td v-if="seen" >
+		                                <div>
+		                                    <span v-for="(name, index2) in classgroup.names"
+		                                          :key="index2" :class="getStyle(name.counts)"
+		                                          @click="collectNames(name)">
+		                                        [[ name.name ]],
+		                                    </span>
+		                                </div>
+		                            </td>
+		                        </tr>
+		                    </table>
+		                </li>
+		            </ul>
+		        </div>
+	        </div>
+	    </div>
+    </main>
 </body>
 </html>
 
@@ -95,10 +122,16 @@
     const app = Vue.createApp({
         data() {
             return {
-                searchQuery: '',
+                // 검색 관련 데이터
+				searchType: 'searchByName',
+	            searchQuery: '',
                 sendingQuery:'',
                 item_groups: [],
-                seen:true,
+	            
+	            // 보기 데이터
+	            seen:true,
+	            
+	            //상품명 선택 데이터
                 collect_names: []
             };
         },
@@ -110,10 +143,10 @@
                     }
                     try {
                         this.sendingQuery=this.searchQuery;
-                        this.searchQuery=this.sendingQuery+" 검색하고 있습니다.";
-                        const response = await axios.get(`http://3.39.195.177:8000/classsearch/${encodeURIComponent(this.sendingQuery)}`);
+                        this.searchQuery=this.sendingQuery+' / '+this.searchType+" : 검색하고 있습니다. ";
+						const response = await axios.get(`http://3.39.195.177:8000/${this.searchType}/${encodeURIComponent(this.sendingQuery)}`);
                         this.item_groups = response.data;
-                        this.searchQuery=this.sendingQuery+"의 검색결과";
+                        this.searchQuery=this.sendingQuery+' / '+this.searchType+" : 검색완료 하였습니다. ";
                         console.log(this.item_groups);
                     } catch (error) {
                         console.error('Error fetching data:', error);
@@ -133,7 +166,6 @@
             },
             toggleItem(index) {
                 this.item_groups[index].showContent = !this.item_groups[index].showContent;
-                console.log(this.item_groups)
             },
             collectNames(name) {
  
@@ -161,7 +193,8 @@
                         if (name_index !== -1) {
 							// 모두 있는 경우 => 삭제
                             this.collect_names[niceclass_index2].groupcodes[groupcode_index2].names.splice(name_index2, 1)
-  
+                            
+	                        this.collect_names[niceclass_index2].niceclasscount = this.collect_names[niceclass_index2].niceclasscount-1
 	                        // name 삭제 후 나머지 상위 그룹 처리
 	                        
                             // groupcode내 다른 데이터 없으면, 나머지 groupcode 삭제
@@ -175,16 +208,14 @@
                             }
 							
 							// 삭제 종료
-							return
+	                        return
 							
 						// 기존에 없는 경우 추가#1 : groupcode는 있는 경우.
                         } else {
                             this.collect_names[niceclass_index].groupcodes[groupcode_index].names.push({
-                                niceclass: name.niceclass,
-                                code: name.groupcode,
-                                name: name.name
-                            });
-							
+                                niceclass: name.niceclass, groupcode: name.groupcode, name: name.name});
+							this.collect_names[niceclass_index].niceclasscount = this.collect_names[niceclass_index].niceclasscount+1
+	      
 							// 삽입#1 종료
 	                        return
                         }
@@ -193,20 +224,40 @@
                         this.collect_names[niceclass_index].groupcodes.push(
                             { groupcode: name.groupcode, names : [{name: name.name, groupcode: name.groupcode, niceclass: name.niceclass }]})
 	                    
+                        this.collect_names[niceclass_index].niceclasscount = this.collect_names[niceclass_index].niceclasscount+1
+	                       
+	                       
 	                    // 삽입#2 종료
-	                        return
+	                    return
                     }
                 }
                 // 기존에 없는 경우 추가#3 : 아무것도 없는 경우.
-                const newGroup = {
+                const niceclass_index4 = this.collect_names.findIndex((g) => g.niceclass === name.niceclass);
+				if (niceclass_index4 !== -1) {
+					// 기존에 다른 groupcode 있는 경우
+					const newGroup = {
                     niceclass: name.niceclass,
                     groupcodes: [{ groupcode: name.groupcode, names : [{name: name.name, groupcode: name.groupcode, niceclass: name.niceclass }]}]
-                  };
-                  this.collect_names.push(newGroup);
-				  
-				  // 삽입#3 종료
-	              return
+                    };
+					this.collect_names.push(newGroup);
+					this.collect_names[niceclass_index4].niceclasscount = this.collect_names[niceclass_index4].niceclasscount+1
+	    
+	    
+				} else {
+					// 정말 아무것도 없는 경우
+					const newGroup = {
+                    niceclass: name.niceclass,niceclasscount:1,niceclassShowContent:true,
+                    groupcodes: [{ groupcode: name.groupcode, names : [{name: name.name, groupcode: name.groupcode, niceclass: name.niceclass }]}]
+                    };
+					this.collect_names.push(newGroup);
+				}
+
+				// 삽입#3 종료
+	            return
             },
+	        clear_searchQuery(){
+				this.searchQuery=""
+	        }
         },
         delimiters: ['[[', ']]']
     });
@@ -234,5 +285,9 @@
 .namestyle1 {
     font-size:0.5em;
     color: grey;
+}
+
+.collect_names {
+	font-size:0.8em;
 }
 </style>

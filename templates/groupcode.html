@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko" class="has-navbar-fixed-top">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -16,35 +16,91 @@
 
 
 </head>
-<body class="bg-light">
-    <section class="section" id="app">
-	    <div class="container">
-	        <!-- 검색바 -->
-	        <div class="columns navbar is-fixed-top is-full box">
-		        <div class="column">
-		            <div class="">
-		            <h3 class="subtitle"><b>상표 유사군 코드 검색</b></h3>
+<body>
+    <div id="app">
+		<section class="container">
+		<div class="columns">
+		<!-- nav 화면 : 1/12 -->
+			<div class="column is-1 left-section">
+				<ul>
+                    <li v-for="(item_group, index) in item_groups">
+                        <a :href="'#section-'+index">[[ item_group.groupcode ]]</a>
+                    </li>
+                </ul>
+			
+			</div>
+				
+		    <!-- 결과 화면 : 7 /12 --> <!-- 조회화면 -->
+			
+			<div class="column is-7 middle-section" >
+	            <!-- 검색바 -->
+			    <div class="is-full box">
+		
+				    
+				    <nav class="breadcrumb is-small" aria-label="breadcrumbs">
+						<ul>
+						    <li><a href="#">홈</a></li>
+						    <li class="is-active"><a href="#" aria-current="page">지정상품검색</a></li>
+						</ul>
+			        </nav>
+					
+		
+		            <div class="columns is-full">
+			            <div class="column is-8">
+				            <input v-model="searchQuery" class="input is-normal is-rounded"
+	                        placeholder="클래스 번호 입력 또는 물품 명칭 입력 (* 각 상품명은 ','로 구분하고, 두개를 동시에 포함하는 경우 ()로 묶어 표시.  ex) (미술 and 설치), 조각, 회화 / and 대신 & 이용 가능)"
+	                        @keyup.enter="search"></input>
+				        </div>
+	                    <div class="column is-2">
+		                    <label class="radio control">
+					            <input type="radio" value="searchByName" v-model="searchType" checked @click="clear_searchQuery">
+					        이름
+					        </label>
+			            </div>
+			            <div class="column is-2">
+				            <label class="radio control">
+					            <input type="radio" value="searchByClass" v-model="searchType" @click="clear_searchQuery">
+					        Class
+					        </label>
+	                    </div>
 		            </div>
-		            <div class="">
-						<div class="columns">
-			                <div class="column is-2 control">
-							  <label class="radio">
-							    <input type="radio" value="searchByName" v-model="searchType" checked @click="clear_searchQuery">
-							    이름
-							  </label>
-							  <label class="radio">
-							    <input type="radio" value="searchByClass" v-model="searchType" @click="clear_searchQuery">
-							    Class
-							  </label>
-			                </div>
-							<div class="column is-10">
-				                <input v-model="searchQuery" class="input is-small "
-			                        placeholder="클래스 번호 입력 또는 물품 명칭 입력 (* 각 상품명은 ','로 구분하고, 두개를 동시에 포함하는 경우 ()로 묶어 표시.  ex) (미술 and 설치), 조각, 회화 / and 대신 & 이용 가능)"
-			                        @keyup.enter="search"></input>
-			                </div>
-						</div>
-		            </div>
-		            <div id="results" class="collect_names">
+			    </div>
+				<div id="screen">
+					<span @click="this.seen=!this.seen"> <a>((상세보기/감추기))</a> </span>
+			        <ul>
+		                <li v-for="(item_group, index) in item_groups" :key="index" class="block" >
+		                    <h1 @click="item_groups[index].showContent = !item_groups[index].showContent"
+		                        :id="'section-'+index">
+			                    [[item_group.groupcode]] :
+		                        <span v-for="classgroup in item_group.classgroup">
+		                            <span v-for="represent in classgroup.represent">
+		                            [[ represent ]],
+		                            </span>
+		                        </span>
+		                    </h1>
+		                    <table v-if="item_group.showContent" class="table">
+		                        <tr v-for="classgroup in item_group.classgroup">
+		                            <td class="" style="vertical-align: top;"><b>[[ classgroup.niceclass[1] ]]</b></td>
+		                            <td v-if="seen" >
+		                                <div>
+		                                    <span v-for="(name, index2) in classgroup.names"
+		                                          :key="index2" :class="getStyle(name.counts)"
+		                                          @click="collectNames(name)">
+		                                        [[ name.name ]],
+		                                    </span>
+		                                </div>
+		                            </td>
+		                        </tr>
+		                    </table>
+		                </li>
+		            </ul>
+				</div>
+			</div>
+				
+		    <!-- 정리 공간 : 4 / 12-->
+		   
+			<div class="column is-4 right-section">
+				<div id="results" class="collect_names">
 						<table>
 							<tr v-for="collect_name in collect_names">
 								<td>
@@ -71,44 +127,11 @@
 							</tr>
 						</table>
 		            </div>
-		        </div>
-	        </div>
-	    </div>
-	    <div class="container columns" style="clear:both;">
-	        <!-- 조회화면 -->
-	        <div class="">
-		        <div id="screen" class="column">
-		            <span @click="this.seen=!this.seen"> <a>((상세보기/감추기))</a> </span>
-			        <ul>
-		                <li v-for="(item_group, index) in item_groups" :key="index" class="block" >
-		                    <h1 @click="item_groups[index].showContent = !item_groups[index].showContent">
-			                    [[item_group.groupcode]] :
-		                        <span v-for="classgroup in item_group.classgroup">
-		                            <span v-for="represent in classgroup.represent">
-		                            [[ represent ]],
-		                            </span>
-		                        </span>
-		                    </h1>
-		                    <table v-if="item_group.showContent" class="table">
-		                        <tr v-for="classgroup in item_group.classgroup">
-		                            <td class="" style="vertical-align: top;"><b>[[ classgroup.niceclass[1] ]]</b></td>
-		                            <td v-if="seen" >
-		                                <div>
-		                                    <span v-for="(name, index2) in classgroup.names"
-		                                          :key="index2" :class="getStyle(name.counts)"
-		                                          @click="collectNames(name)">
-		                                        [[ name.name ]],
-		                                    </span>
-		                                </div>
-		                            </td>
-		                        </tr>
-		                    </table>
-		                </li>
-		            </ul>
-		        </div>
-	        </div>
-	    </div>
-    </section>
+			</div>
+		</div>
+	    </section>
+	    
+    </div>
 </body>
 </html>
 
@@ -284,4 +307,45 @@
 .collect_names {
 	font-size:0.8em;
 }
+
+/* left-section, right-section, middle-section 은 정리 필요 */
+
+.left-section,.right-section {
+        position: fixed;
+		top: 0;
+        bottom: 0;
+        height: 100%;
+        overflow: auto;
+		z-index : 20;      }
+
+      .left-section {
+        left: 0;
+        /*
+	      width: calc(100% / 12 * 1);
+	      
+         */
+        background-color: #eee;
+      }
+
+      .right-section {
+        right: 0;
+	      /*
+        width: calc(100% / 12 * 4);
+        
+	       */
+        background-color: #ccc;
+      }
+
+      .middle-section {
+        /*
+        
+        margin-right: calc(100% / 12 * 4);
+         */
+        
+        width: calc(100% / 12 * 8.5)!important;
+        
+        margin-left: 8px;
+        
+        overflow-y: scroll;
+      }
 </style>
