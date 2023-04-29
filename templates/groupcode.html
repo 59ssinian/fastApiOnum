@@ -66,6 +66,11 @@
                     </li>
                     <li v-for="(item_group, index) in item_groups">
                         <a :href="'#section-'+index">[[ item_group.groupcode ]]</a>
+	                    <span style="font-size:0.5em" v-for="classgroup in item_group.classgroup">
+		                            <span v-for="(represent, index) in classgroup.represent" :key="index">
+			                            <span v-if="index === 0 "> [[ represent ]] </span>
+		                            </span>
+		                </span>
                     </li>
                 </ul>
 			
@@ -110,15 +115,46 @@
 		    <!-- 정리 공간 : 4 / 12-->
 		   
 			<div class="column is-3 right-section">
+				<div>
+					<form method="POST" action="/form">
+			            <div style="display:none;">
+							<span v-for="collect_name in collect_names">
+								<span v-for="groupcodes in collect_name.groupcodes">
+									<input type="number" name="classno" value='[[ collect_name.niceclass ]]'>
+									<input type="text" name="group" value="[[ groupcodes.groupcode ]]">
+									<input type="text" name="name" value="[[ stringList(groupcodes.names) ]]">
+								</span>
+							</span>
+			            </div>
+			            <button type="submit">진행</button>
+                    </form>
+				</div>
+				
 				<div id="results" class="collect_names">
 						<table>
 							<tr v-for="collect_name in collect_names">
 								<td>
-								  [[ collect_name.niceclass ]] ([[ collect_name.niceclasscount ]])
-									<label class="checkbox">
-										<input type="checkbox"
-									    @click="collect_name.niceclassShowContent = !collect_name.niceclassShowContent">
-									</label>
+								    <table>
+									    <tr>
+										    <td>
+												[[ collect_name.niceclass ]] ([[ collect_name.niceclasscount ]])
+												<label class="checkbox">
+													<input type="checkbox"
+												    @click="collect_name.niceclassShowContent = !collect_name.niceclassShowContent">
+												</label>
+										    </td>
+									    </tr>
+										<tr>
+											<td>
+												<span v-for="groupcodes in collect_name.groupcodes">
+													<span v-for="name in groupcodes.names" style="font-size:0.1em">
+											        [[ name.name ]],
+											        </span>
+												</span>
+											</td>
+										</tr>
+									   
+								    </table>
 								</td>
 								<td>
 									<table class="table" v-if="collect_name.niceclassShowContent">
@@ -194,7 +230,10 @@
             toggleItem(index) {
                 this.item_groups[index].showContent = !this.item_groups[index].showContent;
             },
-            collectNames(name) {
+	        stringList(names) {
+                return names.list['name'].join(",");
+            },
+	        collectNames(name) {
  
                 // 기존에 name이 있는지 검토하고, 없는 경우 삽입, 있는 경우 삭제
 
