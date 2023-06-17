@@ -1,5 +1,5 @@
-import notion_custom
-import functions
+import src.notion_custom as notion_custom
+import src.trademark.trademark_functions as functions
 
 database_id = 'c985b36c8cec439182cc0e322c863478'
 
@@ -75,7 +75,7 @@ def mass_report(marks, groups):
                     similar_trademarks_image = functions.get_trademarks_image(driver, count)
                     similar_trademarks_detail = functions.get_trademarks_detail(driver, count)
 
-                    trademarks = functions.merge_trademarks(similar_trademarks_detail ,similar_trademarks_image)
+                    trademarks = functions.merge_trademarks(similar_trademarks_detail, similar_trademarks_image)
 
 
                     print("노션기록시작")

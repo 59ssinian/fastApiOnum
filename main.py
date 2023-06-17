@@ -7,9 +7,7 @@ from pydantic import BaseModel
 
 from typing import List
 
-import mass_report
-import search_report
-import groupcode
+from src.trademark import groupcode, mass_report, search_report
 
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
@@ -57,8 +55,9 @@ async def index(request: Request):
     return templates.TemplateResponse("niceclass.html", {"request": request})
 
 @app.post("/form")
-async def form(request:Request, classno: List[int], group: List[str], name: List[str]):
-    return templates.TemplateResponse("search_report.html", {"classnos": classno, "groups": group, "names": name})
+async def form(request: Request, classno: List[int] = Form([]), group: List[str] = Form([]), name: List[str] = Form([])):
+    context = {"request": request, "classnos": classno, "groups": group, "names": name}
+    return templates.TemplateResponse("search_report2.html", context)
 
 @app.post("/search_report")
 async def search_form(markk: List[str] = Form([]), marke: List[str] = Form([]),

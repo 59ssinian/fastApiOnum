@@ -1,6 +1,5 @@
-import notion_custom
-import functions
-import notion_client
+from src import notion_custom
+from src.trademark import trademark_functions
 
 database_id = '1e60aa4795284be69ccf526819d01767'
 
@@ -8,7 +7,7 @@ def search_report(marks, groups):
 
 
     # 로그인 시작
-    driver = functions.login_intomark()
+    driver = trademark_functions.login_intomark()
     print("로그인 성공")
 
     print("메인 검색 진행")
@@ -73,11 +72,11 @@ def search_report(marks, groups):
                 notion_custom.notion_block_append_paragraph(id_page, section)
 
                 if ( (section_mark.find("%") == -1) and (section_mark.find("/") == -1) ):
-                    driver = functions.search_word_similar(driver, section_mark, class_no, group_code)
+                    driver = trademark_functions.search_word_similar(driver, section_mark, class_no, group_code)
                 else:
-                    driver = functions.search_word_identical(driver, section_mark, class_no, group_code)
+                    driver = trademark_functions.search_word_identical(driver, section_mark, class_no, group_code)
 
-                similar_count = functions.results_count(driver)['active']
+                similar_count = trademark_functions.results_count(driver)['active']
                 similar_trademarks = None
                 print(similar_count)
 
@@ -87,10 +86,10 @@ def search_report(marks, groups):
                     else:
                         count = 10
 
-                    similar_trademarks_image = functions.get_trademarks_image(driver, count)
-                    similar_trademarks_detail = functions.get_trademarks_detail(driver, count)
+                    similar_trademarks_image = trademark_functions.get_trademarks_image(driver, count)
+                    similar_trademarks_detail = trademark_functions.get_trademarks_detail(driver, count)
 
-                    trademarks = functions.merge_trademarks(similar_trademarks_detail, similar_trademarks_image)
+                    trademarks = trademark_functions.merge_trademarks(similar_trademarks_detail, similar_trademarks_image)
 
                     print("노션기록시작")
                     notion_custom.notion_block_append_trademarks_list(id_page, trademarks)
@@ -117,6 +116,6 @@ def search_report(marks, groups):
         id_page = notion_custom.notion_page_append_page(id_page, third_id_page)
 
 
-    functions.logout_intomark(driver)
+    trademark_functions.logout_intomark(driver)
 
     return

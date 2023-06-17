@@ -62,19 +62,19 @@
 	                <div class="column is-4"> <label>상품명</label></div>
                 </div>
 	            {% for i in range(1,11) %}
-	            <div class="columns"
-	                {% if i > 8 %} v-if="seen2" {% endif %} >
+	            <div class="columns" >
 	                <div class="column is-1"> <label>{{ i }}</label> </div>
-	                <div class="column is-1"> <input type="number" class="input is-small" name="classno" value="0"
+	                <div class="column is-1"> <input type="number" class="input is-small" name="classno"
+													{% if classnos[i-1] != 0 %} value="{{ classnos[i-1] }}" {% else %} value=0 {% endif %}
 												     {% if i ==1 %} required {% endif %} > </div>
 		            <div class="column is-4"> <input type="text" class="input is-small" name="group" placeholder="한 그룹으로 기재 / 예) G0301 G0502 S120602"
+		                                             {% if groups[i-1] != 0 %} value="{{ groups[i-1] }}" {% endif %}
 		                                             {% if i == 1 %} required {% endif %} > </div>
 	                <div class="column is-4"> <input type="text" class="input is-small" name="name" placeholder="지정상품명 / 예) 가방 "
-		                                             {% if i == 1 %} required {% endif %} > </div>
+		                                            {% if names[i-1] != 0 %} value="{{ names[i-1] }}" {% endif %}
+	                                                 {% if i == 1 %} required {% endif %} > </div>
 	            </div>
 	            {% endfor %}
-				<!-- 류 입력 끝 -->
-		        <button @click="seen2 = !seen2">더보기</button>
             </div>
 		</div>
 	    <hr>
